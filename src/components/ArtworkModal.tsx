@@ -172,13 +172,19 @@ export default function ArtworkModal({ artwork, isOpen, onClose }: ArtworkModalP
       return;
     }
 
+    // Función auxiliar para obtener la fecha como string
+    const getCurrentDate = (): string => {
+      const now = new Date();
+      return now.toISOString().substring(0, 10);
+    };
+
     const newReview: Review = {
       id: Date.now().toString(),
       artworkId: artwork?.id || '',
       userName: userName.trim(),
       rating: userRating,
       comment: comment.trim(),
-      date: new Date().toISOString().split('T')[0],
+      date: getCurrentDate(),
       verified: false
     };
 
