@@ -267,11 +267,11 @@ export default function ArtworkModal({ artwork, isOpen, onClose }: ArtworkModalP
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
             {/* Image Section */}
-            <div className="relative">
+            <div className="relative bg-gray-50 flex items-center justify-center">
               <img 
                 src={artwork.image} 
                 alt={artwork.title}
-                className="w-full h-64 lg:h-full object-cover rounded-t-2xl lg:rounded-l-2xl lg:rounded-tr-none"
+                className="w-full h-64 lg:h-full max-h-[600px] object-contain p-4 rounded-t-2xl lg:rounded-l-2xl lg:rounded-tr-none"
               />
               
               {/* Status Badge */}
