@@ -1,0 +1,230 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout 
+  title="Sobre mí - Una mirada al arte"
+  description="Conoce la historia y filosofía artística detrás de 'Una mirada al arte'. Descubre mi trayectoria, inspiraciones y el proceso creativo que da vida a cada obra."
+>
+  <Header />
+  
+  <main class="pt-16">
+    <!-- Hero Section -->
+    <section class="bg-art-gradient py-20">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="font-display text-5xl md:text-6xl font-bold text-white mb-6 fade-in">
+          Sobre mí
+        </h1>
+        <p class="text-xl text-white/90 max-w-3xl mx-auto slide-in-from-bottom">
+          Descubre la historia detrás del arte, mi filosofía creativa y el camino que me ha llevado a expresar mi visión del mundo a través de cada pincelada.
+        </p>
+      </div>
+    </section>
+    
+    <!-- Main Content -->
+    <section class="py-20 bg-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+          <!-- Image -->
+          <div class="slide-in-from-left">
+            <div class="relative">
+              <img 
+                src="/images/artist-portrait.svg" 
+                alt="Retrato de la artista en su estudio"
+                class="w-full h-[700px] object-cover rounded-2xl art-shadow"
+                loading="lazy"
+              />
+              
+              <!-- Studio Image -->
+              <div class="mt-8">
+                <img 
+                  src="/images/artist-studio.svg" 
+                  alt="Estudio de la artista"
+                  class="w-full h-[300px] object-cover rounded-xl"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </div>
+          
+          <!-- Content -->
+          <div class="slide-in-from-right">
+            <div class="space-y-8">
+              <!-- Introduction -->
+              <div>
+                <h2 class="font-display text-3xl font-bold text-gray-900 mb-6">
+                  Mi Historia Artística
+                </h2>
+                
+                <div class="space-y-6 text-lg text-gray-600 leading-relaxed">
+                  <p>
+                    Desde muy pequeña, el arte ha sido mi lenguaje universal. Crecí rodeada de colores, pinceles y lienzos, descubriendo que a través del arte podía expresar lo que las palabras no alcanzaban a transmitir.
+                  </p>
+                  
+                  <p>
+                    Mi formación académica en Bellas Artes me proporcionó las bases técnicas, pero fue la experimentación constante y la búsqueda personal lo que definió mi estilo único. Cada obra es un diálogo entre la técnica aprendida y la intuición creativa.
+                  </p>
+                  
+                  <p>
+                    A lo largo de más de 15 años de carrera artística, he explorado diversas técnicas y estilos, desde el realismo clásico hasta la abstracción contemporánea, siempre manteniendo como hilo conductor la búsqueda de la belleza y la expresión emocional auténtica.
+                  </p>
+                </div>
+              </div>
+              
+              <!-- Philosophy -->
+              <div>
+                <h3 class="font-display text-2xl font-bold text-gray-900 mb-4">
+                  Mi Filosofía Artística
+                </h3>
+                
+                <div class="space-y-4 text-gray-600">
+                  <p>
+                    Creo firmemente que el arte debe ser un puente entre el artista y el espectador, una invitación a la reflexión y al diálogo emocional. Cada pincelada lleva consigo una intención, cada color una emoción.
+                  </p>
+                  
+                  <p>
+                    Mi trabajo busca capturar la esencia de los momentos efímeros, las emociones complejas y la belleza que se encuentra en lo cotidiano. No se trata solo de crear algo visualmente atractivo, sino de generar una conexión profunda con quien observa la obra.
+                  </p>
+                </div>
+              </div>
+              
+              <!-- Process -->
+              <div>
+                <h3 class="font-display text-2xl font-bold text-gray-900 mb-4">
+                  Mi Proceso Creativo
+                </h3>
+                
+                <div class="space-y-4 text-gray-600">
+                  <p>
+                    Cada obra comienza con una emoción, una idea o una experiencia que necesita ser expresada. Mi proceso creativo es intuitivo pero disciplinado, combinando la planificación cuidadosa con la espontaneidad del momento creativo.
+                  </p>
+                  
+                  <p>
+                    Trabajo principalmente con óleos, acuarelas y técnicas mixtas, eligiendo el medio que mejor se adapte a la historia que quiero contar. Mi estudio es mi santuario, donde cada herramienta tiene su lugar y cada obra encuentra su momento perfecto para nacer.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Timeline -->
+    <section class="py-20 bg-gray-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2 class="font-display text-4xl font-bold text-gray-900 mb-4">
+            Mi Trayectoria
+          </h2>
+          <p class="text-xl text-gray-600">
+            Los momentos clave que han definido mi carrera artística
+          </p>
+        </div>
+        
+        <div class="relative">
+          <!-- Timeline Line -->
+          <div class="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-primary-200"></div>
+          
+          <!-- Timeline Items -->
+          <div class="space-y-16">
+            <!-- Item 1 -->
+            <div class="relative flex items-center">
+              <div class="flex-1 pr-8 text-right slide-in-from-left">
+                <div class="bg-white p-6 rounded-lg art-shadow">
+                  <h3 class="font-bold text-lg text-gray-900 mb-2">2009</h3>
+                  <h4 class="font-semibold text-primary-600 mb-2">Graduación en Bellas Artes</h4>
+                  <p class="text-gray-600">Finalización de mis estudios universitarios con especialización en pintura y técnicas mixtas.</p>
+                </div>
+              </div>
+              
+              <div class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-primary-600 rounded-full border-4 border-white"></div>
+              
+              <div class="flex-1 pl-8"></div>
+            </div>
+            
+            <!-- Item 2 -->
+            <div class="relative flex items-center">
+              <div class="flex-1 pr-8"></div>
+              
+              <div class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-primary-600 rounded-full border-4 border-white"></div>
+              
+              <div class="flex-1 pl-8 slide-in-from-right">
+                <div class="bg-white p-6 rounded-lg art-shadow">
+                  <h3 class="font-bold text-lg text-gray-900 mb-2">2012</h3>
+                  <h4 class="font-semibold text-primary-600 mb-2">Primera Exposición Individual</h4>
+                  <p class="text-gray-600">Debut como artista independiente con mi primera muestra individual "Emociones en Color".</p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Item 3 -->
+            <div class="relative flex items-center">
+              <div class="flex-1 pr-8 text-right slide-in-from-left">
+                <div class="bg-white p-6 rounded-lg art-shadow">
+                  <h3 class="font-bold text-lg text-gray-900 mb-2">2018</h3>
+                  <h4 class="font-semibold text-primary-600 mb-2">Reconocimiento Internacional</h4>
+                  <p class="text-gray-600">Participación en la Bienal de Arte Contemporáneo y reconocimiento por la crítica especializada.</p>
+                </div>
+              </div>
+              
+              <div class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-primary-600 rounded-full border-4 border-white"></div>
+              
+              <div class="flex-1 pl-8"></div>
+            </div>
+            
+            <!-- Item 4 -->
+            <div class="relative flex items-center">
+              <div class="flex-1 pr-8"></div>
+              
+              <div class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-primary-600 rounded-full border-4 border-white"></div>
+              
+              <div class="flex-1 pl-8 slide-in-from-right">
+                <div class="bg-white p-6 rounded-lg art-shadow">
+                  <h3 class="font-bold text-lg text-gray-900 mb-2">2024</h3>
+                  <h4 class="font-semibold text-primary-600 mb-2">Proyecto "Una Mirada al Arte"</h4>
+                  <p class="text-gray-600">Lanzamiento de mi plataforma digital para compartir mi arte con el mundo.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- CTA Section -->
+    <section class="py-20 bg-white">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="font-display text-4xl font-bold text-gray-900 mb-6">
+          ¿Te gustaría conocer más sobre mi trabajo?
+        </h2>
+        <p class="text-xl text-gray-600 mb-8">
+          Estoy siempre dispuesta a compartir mi pasión por el arte y conectar con otros amantes de la expresión artística.
+        </p>
+        
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a 
+            href="/galeria" 
+            class="inline-flex items-center px-8 py-4 bg-primary-600 text-white font-semibold rounded-full hover:bg-primary-700 transition-all duration-300 hover:scale-105 art-shadow"
+          >
+            <span>Ver mi Galería</span>
+            <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+            </svg>
+          </a>
+          
+          <a 
+            href="/contacto" 
+            class="inline-flex items-center px-8 py-4 border-2 border-primary-600 text-primary-600 font-semibold rounded-full hover:bg-primary-600 hover:text-white transition-all duration-300"
+          >
+            <span>Contactar</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+  <Footer />
+</Layout>

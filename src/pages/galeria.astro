@@ -1,0 +1,264 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import ArtworkCardInteractive from '../components/ArtworkCardInteractive.tsx';
+import type { Artwork } from '../types';
+
+// Datos de ejemplo de todas las obras
+const allArtworks: Artwork[] = [
+  {
+    id: '1',
+    title: 'Susurros del Alma',
+    description: 'Una exploración profunda de las emociones humanas a través de colores vibrantes y formas orgánicas que invitan a la contemplación y la reflexión interior.',
+    image: '/images/artwork-1.svg',
+    category: 'oleo',
+    year: 2024,
+    dimensions: '80x60 cm',
+    price: 1200,
+    available: true,
+    featured: true,
+    technique: 'Óleo sobre lienzo con técnica de empaste',
+    materials: ['Óleo', 'Lienzo de algodón', 'Espátula', 'Pinceles de cerda'],
+    inspiration: 'Inspirada en los momentos de introspección durante las tardes de otoño, cuando la luz dorada filtra a través de las ventanas.',
+    rating: 4.8,
+    totalRatings: 12
+  },
+  {
+    id: '2',
+    title: 'Danza de Colores',
+    description: 'Movimiento y energía capturados en una sinfonía visual de tonos cálidos y fríos que danzan en perfecta armonía sobre el papel.',
+    image: '/images/artwork-2.svg',
+    category: 'acuarela',
+    year: 2024,
+    dimensions: '70x50 cm',
+    price: 800,
+    available: true,
+    featured: true,
+    technique: 'Acuarela húmedo sobre húmedo con detalles secos',
+    materials: ['Acuarela profesional', 'Papel Arches 300g', 'Pinceles de pelo natural'],
+    inspiration: 'El movimiento de los bailarines de flamenco y la música que fluye como agua entre los colores.',
+    rating: 4.6,
+    totalRatings: 8
+  },
+  {
+    id: '3',
+    title: 'Reflexiones Urbanas',
+    description: 'La vida citadina vista a través del prisma del arte contemporáneo, donde arquitectura y humanidad se fusionan en una composición única.',
+    image: '/images/artwork-3.svg',
+    category: 'mixta',
+    year: 2023,
+    dimensions: '90x70 cm',
+    available: false,
+    featured: true,
+    technique: 'Técnica mixta: acrílico, collage y tinta',
+    materials: ['Acrílico', 'Papel de periódico', 'Tinta china', 'Lienzo preparado'],
+    inspiration: 'Los contrastes de la vida urbana moderna, entre el caos y la belleza arquitectónica de las grandes ciudades.',
+    rating: 4.9,
+    totalRatings: 15
+  },
+  {
+    id: '4',
+    title: 'Serenidad Azul',
+    description: 'Una composición tranquila que evoca la paz y la contemplación, donde los azules se funden en una danza serena y armoniosa.',
+    image: '/images/artwork-4.svg',
+    category: 'acuarela',
+    year: 2024,
+    dimensions: '60x40 cm',
+    price: 600,
+    available: true,
+    featured: false,
+    technique: 'Acuarela con técnica de lavado y degradados',
+    materials: ['Acuarela', 'Papel de algodón', 'Pinceles redondos'],
+    inspiration: 'Las aguas tranquilas del mediterráneo en una mañana de calma absoluta.',
+    rating: 4.3,
+    totalRatings: 6
+  },
+  {
+    id: '5',
+    title: 'Fuego Interior',
+    description: 'Pasión y energía expresadas a través de pinceladas dinámicas y colores intensos que evocan la fuerza vital del ser humano.',
+    image: '/images/artwork-5.svg',
+    category: 'oleo',
+    year: 2023,
+    dimensions: '100x80 cm',
+    price: 1500,
+    available: true,
+    featured: false,
+    technique: 'Óleo con pincelada expresiva y empastes',
+    materials: ['Óleo', 'Lienzo de lino', 'Espátulas', 'Pinceles de cerda dura'],
+    inspiration: 'La pasión del flamenco y la intensidad de las emociones humanas más profundas.',
+    rating: 4.7,
+    totalRatings: 9
+  },
+  {
+    id: '6',
+    title: 'Naturaleza Abstracta',
+    description: 'La esencia de la naturaleza capturada en formas abstractas y colores orgánicos que fluyen como la vida misma.',
+    image: '/images/artwork-6.svg',
+    category: 'mixta',
+    year: 2024,
+    dimensions: '75x55 cm',
+    price: 950,
+    available: true,
+    featured: false,
+    technique: 'Técnica mixta con texturas naturales',
+    materials: ['Acrílico', 'Arena', 'Hojas secas', 'Gel medium'],
+    inspiration: 'Los bosques de otoño y la textura de la corteza de los árboles centenarios.',
+    rating: 4.5,
+    totalRatings: 7
+  },
+  {
+    id: '7',
+    title: 'Osito Dulce',
+    description: 'Un adorable osito amigurumi tejido con amor y dedicación, perfecto para acompañar y brindar ternura en cualquier momento.',
+    image: '/images/amigurumi-1.svg',
+    category: 'amigurumi',
+    year: 2024,
+    dimensions: '25x20 cm',
+    price: 350,
+    available: true,
+    featured: false,
+    technique: 'Crochet con punto bajo y aumentos/disminuciones',
+    materials: ['Hilo de algodón', 'Relleno de fibra', 'Ojos de seguridad', 'Aguja de crochet 3.5mm'],
+    inspiration: 'La ternura de los peluches de la infancia y la calidez de los abrazos maternos.',
+    rating: 4.9,
+    totalRatings: 18
+  },
+  {
+    id: '8',
+    title: 'Conejito Primaveral',
+    description: 'Un tierno conejito amigurumi en tonos pastel que evoca la frescura y alegría de la primavera, con orejas largas y suaves.',
+    image: '/images/amigurumi-2.svg',
+    category: 'amigurumi',
+    year: 2024,
+    dimensions: '30x15 cm',
+    price: 380,
+    available: true,
+    featured: false,
+    technique: 'Crochet con técnica de orejas largas y cola pompón',
+    materials: ['Hilo de algodón suave', 'Relleno hipoalergénico', 'Hilo bordador', 'Aguja de crochet 4mm'],
+    inspiration: 'Los campos de flores en primavera y la dulzura de los conejos saltando entre la hierba.',
+    rating: 4.7,
+    totalRatings: 14
+  },
+  {
+    id: '9',
+    title: 'Gatito Mimoso',
+    description: 'Un encantador gatito amigurumi con bigotes bordados y cola curvada, diseñado para ser el compañero perfecto de juegos y mimos.',
+    image: '/images/amigurumi-3.svg',
+    category: 'amigurumi',
+    year: 2024,
+    dimensions: '28x18 cm',
+    price: 400,
+    available: true,
+    featured: false,
+    technique: 'Crochet con bordado de detalles faciales y cola modelada',
+    materials: ['Hilo acrílico suave', 'Relleno premium', 'Hilo para bordar', 'Ojos bordados', 'Aguja de crochet 3.5mm'],
+    inspiration: 'La elegancia felina y la personalidad juguetona de los gatos domésticos.',
+    rating: 4.8,
+    totalRatings: 16
+  }
+];
+
+const categories = ['todas', 'oleo', 'acuarela', 'mixta', 'amigurumi'];
+---
+
+<Layout 
+  title="Galería - Una mirada al arte"
+  description="Explora la colección completa de obras artísticas. Descubre pinturas al óleo, acuarelas y técnicas mixtas que capturan la esencia del arte contemporáneo."
+>
+  <Header />
+  
+  <main class="pt-16">
+    <!-- Page Header -->
+    <section class="bg-art-gradient py-20">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="font-display text-5xl md:text-6xl font-bold text-white mb-6 fade-in">
+          Galería de Arte
+        </h1>
+        <p class="text-xl text-white/90 max-w-3xl mx-auto slide-in-from-bottom">
+          Explora mi colección completa de obras, donde cada pieza cuenta una historia única y refleja mi visión artística personal.
+        </p>
+      </div>
+    </section>
+    
+    <!-- Filter Section -->
+    <section class="py-12 bg-white border-b">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-wrap justify-center gap-4">
+          {categories.map((category) => (
+            <button 
+              class="px-6 py-2 rounded-full border-2 border-primary-600 text-primary-600 hover:bg-primary-600 hover:text-white transition-all duration-300 capitalize filter-btn"
+              data-category={category}
+            >
+              {category === 'todas' ? 'Todas las Obras' : 
+               category === 'oleo' ? 'Óleo' :
+               category === 'acuarela' ? 'Acuarela' :
+               category === 'mixta' ? 'Técnica Mixta' :
+               category === 'amigurumi' ? 'Amigurumi' :
+               category}
+            </button>
+          ))}
+        </div>
+      </div>
+    </section>
+    
+    <!-- Artworks Grid -->
+    <section class="py-20 bg-gray-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="artworks-grid">
+          {allArtworks.map((artwork, index) => (
+            <div 
+              class="artwork-item slide-in-from-bottom" 
+              data-category={artwork.category}
+              style={`animation-delay: ${index * 0.1}s;`}
+            >
+              <ArtworkCardInteractive artwork={artwork} client:load />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+  
+  <Footer />
+</Layout>
+
+<script>
+  // Filter functionality
+  document.addEventListener('DOMContentLoaded', () => {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const artworkItems = document.querySelectorAll('.artwork-item');
+    
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const category = button.getAttribute('data-category');
+        
+        // Update active button
+        filterButtons.forEach(btn => {
+          btn.classList.remove('bg-primary-600', 'text-white');
+          btn.classList.add('text-primary-600');
+        });
+        button.classList.add('bg-primary-600', 'text-white');
+        button.classList.remove('text-primary-600');
+        
+        // Filter artworks
+        artworkItems.forEach(item => {
+          const itemCategory = item.getAttribute('data-category');
+          if (category === 'todas' || itemCategory === category) {
+            item.style.display = 'block';
+            item.classList.add('fade-in');
+          } else {
+            item.style.display = 'none';
+            item.classList.remove('fade-in');
+          }
+        });
+      });
+    });
+    
+    // Set initial active state
+    filterButtons[0]?.classList.add('bg-primary-600', 'text-white');
+    filterButtons[0]?.classList.remove('text-primary-600');
+  });
+</script>

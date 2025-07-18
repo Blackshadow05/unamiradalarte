@@ -1,0 +1,24 @@
+---
+import Navigation from './Navigation.tsx';
+---
+
+<header class="fixed top-0 left-0 right-0 z-50 glass-effect border-b border-white/10">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <!-- Logo -->
+      <div class="flex-shrink-0">
+        <a href="/" class="flex items-center space-x-3 group">
+          <div class="w-10 h-10 bg-white shadow-lg rounded-full flex items-center justify-center group-hover:scale-110 transition-all duration-300 border-2 border-primary-200">
+            <span class="text-primary-600 font-bold text-lg">A</span>
+          </div>
+          <span class="font-display font-bold text-xl text-gray-800 group-hover:text-primary-600 transition-colors duration-300 drop-shadow-sm">
+            Una mirada al arte
+          </span>
+        </a>
+      </div>
+      
+      <!-- Navigation -->
+      <Navigation client:load />
+    </div>
+  </div>
+</header>

@@ -1,0 +1,80 @@
+---
+import type { Artwork } from '../types';
+
+interface Props {
+  artwork: Artwork;
+}
+
+const { artwork } = Astro.props;
+
+const getCategoryLabel = (category: string) => {
+  const labels = {
+    'pintura': 'Pintura',
+    'acuarela': 'Acuarela',
+    'oleo': 'Óleo',
+    'mixta': 'Técnica Mixta',
+    'amigurumi': 'Amigurumi'
+  };
+  return labels[category as keyof typeof labels] || category;
+};
+---
+
+<article class="group relative bg-white rounded-2xl overflow-hidden art-shadow hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+  <!-- Image Container -->
+  <div class="relative aspect-[4/3] overflow-hidden">
+    <img 
+      src={artwork.image} 
+      alt={artwork.title}
+      class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+      loading="lazy"
+    />
+    
+    <!-- Overlay -->
+    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+      <div class="absolute bottom-4 left-4 right-4">
+        <div class="flex items-center justify-between text-white">
+          <span class="text-sm font-medium bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full">
+            {getCategoryLabel(artwork.category)}
+          </span>
+          <span class="text-sm">{artwork.year}</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Status Badge -->
+    {!artwork.available && (
+      <div class="absolute top-4 right-4">
+        <span class="bg-red-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
+          Vendida
+        </span>
+      </div>
+    )}
+  </div>
+  
+  <!-- Content -->
+  <div class="p-6">
+    <h3 class="font-display text-xl font-semibold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors duration-300">
+      {artwork.title}
+    </h3>
+    
+    <p class="text-gray-600 text-sm mb-4 line-clamp-2">
+      {artwork.description}
+    </p>
+    
+    <div class="flex items-center justify-between text-sm text-gray-500">
+      <span>{artwork.dimensions}</span>
+      {artwork.price && (
+        <span class="font-semibold text-primary-600">
+          ${artwork.price.toLocaleString()}
+        </span>
+      )}
+    </div>
+  </div>
+  
+  <!-- Hover Action -->
+  <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20">
+    <button class="bg-white text-primary-600 px-6 py-2 rounded-full font-semibold hover:bg-primary-600 hover:text-white transition-colors duration-300">
+      Ver Detalles
+    </button>
+  </div>
+</article>
