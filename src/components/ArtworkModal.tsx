@@ -153,14 +153,18 @@ export default function ArtworkModal({ artwork, isOpen, onClose }: ArtworkModalP
   }, [artwork]);
 
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
+    if (typeof document !== 'undefined') {
+      if (isOpen) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = 'unset';
+      }
     }
 
     return () => {
-      document.body.style.overflow = 'unset';
+      if (typeof document !== 'undefined') {
+        document.body.style.overflow = 'unset';
+      }
     };
   }, [isOpen]);
 
@@ -168,7 +172,9 @@ export default function ArtworkModal({ artwork, isOpen, onClose }: ArtworkModalP
     e.preventDefault();
     
     if (!userRating || !comment.trim() || !userName.trim()) {
-      alert('Por favor completa todos los campos');
+      if (typeof window !== 'undefined') {
+        alert('Por favor completa todos los campos');
+      }
       return;
     }
 
@@ -195,7 +201,9 @@ export default function ArtworkModal({ artwork, isOpen, onClose }: ArtworkModalP
     setComment('');
     setUserName('');
     
-    alert('¡Gracias por tu reseña!');
+    if (typeof window !== 'undefined') {
+      alert('¡Gracias por tu reseña!');
+    }
   };
 
   const renderStars = (rating: number, interactive = false, size = 'w-5 h-5') => {

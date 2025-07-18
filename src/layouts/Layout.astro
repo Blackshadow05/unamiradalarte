@@ -1,4 +1,6 @@
 ---
+import '../styles/globals.css';
+
 export interface Props {
   title: string;
   description?: string;
@@ -47,8 +49,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'http://localhost
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     
-    <!-- Styles -->
-    <link rel="stylesheet" href="/src/styles/globals.css" />
+
   </head>
   <body class="font-body bg-white text-gray-900 antialiased">
     <slot />
