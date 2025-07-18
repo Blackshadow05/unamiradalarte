@@ -13,10 +13,5 @@ export default defineConfig({
   output: 'static',
   build: {
     inlineStylesheets: 'auto'
-  },
-  vite: {
-    build: {
-      cssMinify: 'lightningcss'
-    }
   }
 });
