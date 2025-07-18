@@ -246,12 +246,13 @@ const categories = ['todas', 'oleo', 'acuarela', 'mixta', 'amigurumi'];
         // Filter artworks
         artworkItems.forEach(item => {
           const itemCategory = item.getAttribute('data-category');
+          const htmlItem = item as HTMLElement;
           if (category === 'todas' || itemCategory === category) {
-            item.style.display = 'block';
-            item.classList.add('fade-in');
+            htmlItem.style.display = 'block';
+            htmlItem.classList.add('fade-in');
           } else {
-            item.style.display = 'none';
-            item.classList.remove('fade-in');
+            htmlItem.style.display = 'none';
+            htmlItem.classList.remove('fade-in');
           }
         });
       });
