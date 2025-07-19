@@ -1,4 +1,5 @@
 ---
+import RandomRatingsCarousel from './RandomRatingsCarousel.tsx';
 // Importar todas las reseñas desde el modal (simulando una base de datos)
 const allReviews = [
   {
@@ -209,44 +210,8 @@ const verifiedReviews = allReviews.filter(review => review.verified).length;
       </div>
     </div>
     
-    <!-- Reviews Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {featuredReviews.map((review, index) => (
-        <div 
-          class="bg-white rounded-2xl p-6 art-shadow hover:shadow-2xl transition-all duration-300 slide-in-from-bottom"
-          style={`animation-delay: ${index * 0.1}s;`}
-        >
-          <!-- Header -->
-          <div class="flex items-start justify-between mb-4">
-            <div class="flex-1">
-              <div class="flex items-center space-x-2 mb-1">
-                <h3 class="font-semibold text-gray-900">{review.userName}</h3>
-                {review.verified && (
-                  <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-medium">
-                    ✓ Verificado
-                  </span>
-                )}
-              </div>
-              <p class="text-sm text-primary-600 font-medium mb-2">{review.artworkTitle}</p>
-              <div class="flex items-center space-x-1">
-                <span class="text-yellow-400 text-lg">{renderStars(review.rating)}</span>
-                <span class="text-sm text-gray-500 ml-2">({review.rating}/5)</span>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Comment -->
-          <blockquote class="text-gray-600 leading-relaxed mb-4 italic">
-            "{review.comment}"
-          </blockquote>
-          
-          <!-- Date -->
-          <div class="text-xs text-gray-400">
-            {formatDate(review.date)}
-          </div>
-        </div>
-      ))}
-    </div>
+    <!-- Reviews Grid - Calificaciones Reales Aleatorias -->
+    <RandomRatingsCarousel client:load />
     
     <!-- CTA -->
     <div class="text-center mt-12 scale-in">

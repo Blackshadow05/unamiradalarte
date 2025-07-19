@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { Artwork, Review } from '../types';
 import { cn } from '../lib/utils';
+import ArtworkRatings from './ArtworkRatings';
 
 interface ArtworkModalProps {
   artwork: Artwork | null;
@@ -362,81 +363,10 @@ export default function ArtworkModal({ artwork, isOpen, onClose }: ArtworkModalP
 
               {/* Reviews Section */}
               <div className="border-t pt-6">
-                <h3 className="font-semibold text-gray-900 mb-4">
-                  Reseñas ({reviews.length})
-                </h3>
-
-                {/* Add Review Form */}
-                <form onSubmit={handleSubmitReview} className="mb-6 p-4 bg-gray-50 rounded-lg">
-                  <h4 className="font-medium text-gray-900 mb-3">Agregar reseña</h4>
-                  
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                    <input
-                      type="text"
-                      placeholder="Tu nombre"
-                      value={userName}
-                      onChange={(e) => setUserName(e.target.value)}
-                      className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                      required
-                    />
-                    
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Calificación
-                      </label>
-                      {renderStars(userRating, true)}
-                    </div>
-                  </div>
-
-                  <textarea
-                    placeholder="Escribe tu comentario sobre esta obra..."
-                    value={comment}
-                    onChange={(e) => setComment(e.target.value)}
-                    rows={3}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent mb-4"
-                    required
-                  />
-
-                  <button
-                    type="submit"
-                    className="bg-primary-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-primary-700 transition-colors"
-                  >
-                    Enviar Reseña
-                  </button>
-                </form>
-
-                {/* Reviews List */}
-                <div className="space-y-4 max-h-64 overflow-y-auto">
-                  {reviews.map((review) => (
-                    <div key={review.id} className="border-b border-gray-200 pb-4 last:border-b-0">
-                      <div className="flex items-start justify-between mb-2">
-                        <div>
-                          <div className="flex items-center space-x-2">
-                            <span className="font-medium text-gray-900">{review.userName}</span>
-                            {review.verified && (
-                              <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
-                                Verificado
-                              </span>
-                            )}
-                          </div>
-                          {renderStars(review.rating, false, 'w-4 h-4')}
-                        </div>
-                        <span className="text-sm text-gray-500">
-                          {formatDate(review.date)}
-                        </span>
-                      </div>
-                      <p className="text-gray-600 text-sm leading-relaxed">
-                        {review.comment}
-                      </p>
-                    </div>
-                  ))}
-                  
-                  {reviews.length === 0 && (
-                    <p className="text-gray-500 text-center py-4">
-                      Sé el primero en dejar una reseña
-                    </p>
-                  )}
-                </div>
+                <ArtworkRatings 
+                  artworkId={artwork.id} 
+                  artworkTitle={artwork.title}
+                />
               </div>
             </div>
           </div>

@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -31,6 +33,18 @@
   
   .slide-in-from-right {
     animation: slide-in-from-right 0.8s ease-out;
+  }
+  
+  .animate-slide-in-from-top {
+    animation: slide-in-from-top 0.5s ease-out;
+  }
+  
+  .animate-fade-in-scale {
+    animation: fade-in-scale 0.4s ease-out;
+  }
+  
+  .animate-slide-in-from-top-cascade {
+    animation: slide-in-from-top-cascade 2s cubic-bezier(0.23, 1, 0.32, 1);
   }
   
   .scale-in {
@@ -96,9 +110,105 @@
   }
 }
 
+@keyframes slide-in-from-top {
+  from { 
+    opacity: 0;
+    transform: translateY(-2rem);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-in-from-top-cascade {
+  0% { 
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translateY(-20%);
+  }
+  100% { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in-scale {
+  from { 
+    opacity: 0;
+    transform: scale(0.95) translateY(-0.5rem);
+  }
+  to { 
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes whisper-fade-out {
+  0% { 
+    opacity: 1;
+    transform: scale(1);
+  }
+  20% {
+    opacity: 0.8;
+    transform: scale(0.99);
+  }
+  40% {
+    opacity: 0.6;
+    transform: scale(0.98);
+  }
+  60% {
+    opacity: 0.4;
+    transform: scale(0.97);
+  }
+  80% {
+    opacity: 0.2;
+    transform: scale(0.96);
+  }
+  100% { 
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+@keyframes whisper-fade-in {
+  0% { 
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  20% {
+    opacity: 0.2;
+    transform: scale(0.96);
+  }
+  40% {
+    opacity: 0.4;
+    transform: scale(0.97);
+  }
+  60% {
+    opacity: 0.6;
+    transform: scale(0.98);
+  }
+  80% {
+    opacity: 0.8;
+    transform: scale(0.99);
+  }
+  100% { 
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 /* Estilos personalizados para el arte */
 .art-gradient {
   background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+}
+
+/* Color personalizado para transiciones suaves */
+.to-primary-25 {
+  --tw-gradient-to: rgb(252 231 243 / 0.25);
 }
 
 .art-text-gradient {
@@ -166,4 +276,31 @@
 .artwork-card:hover {
   transform: translateY(-8px);
   box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+}
+
+/* Rating cards animations - Elegantes */
+.rating-card {
+  transition: all 3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.rating-card:hover {
+  transform: translateY(-2px) scale(1.005);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+}
+
+/* Whisper-soft transitions */
+.whisper-fade-out {
+  animation: whisper-fade-out 3s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+.whisper-fade-in {
+  animation: whisper-fade-in 3s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+/* Line clamp for comments */
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
