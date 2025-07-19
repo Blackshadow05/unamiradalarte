@@ -116,6 +116,11 @@ export default function ReviewsCarousel() {
 
   const currentReview = allReviews[currentIndex];
 
+  // Safety check - should never happen but satisfies TypeScript
+  if (!currentReview) {
+    return <div>Error: No se pudo cargar la reseña</div>;
+  }
+
   return (
     <div className="bg-white rounded-2xl p-8 art-shadow max-w-2xl mx-auto">
       {/* Review Content */}
