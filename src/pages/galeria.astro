@@ -158,10 +158,58 @@ const allArtworks: Artwork[] = [
     inspiration: 'La elegancia felina y la personalidad juguetona de los gatos domésticos.',
     rating: 4.8,
     totalRatings: 16
+  },
+  {
+    id: '10',
+    title: 'Retrato Familiar - Comisión',
+    description: 'Retrato personalizado de una familia, capturando la esencia y conexión especial entre sus miembros con técnica de óleo sobre lienzo.',
+    image: '/images/custom-1.svg',
+    category: 'personalizados',
+    year: 2024,
+    dimensions: '70x50 cm',
+    available: false,
+    featured: false,
+    technique: 'Óleo sobre lienzo con técnica realista',
+    materials: ['Óleo', 'Lienzo de algodón', 'Pinceles de detalle'],
+    inspiration: 'Trabajo personalizado creado a partir de fotografías familiares, enfocado en capturar la personalidad única de cada miembro.',
+    rating: 5.0,
+    totalRatings: 1
+  },
+  {
+    id: '11',
+    title: 'Mascota Querida - Comisión',
+    description: 'Retrato personalizado de una mascota beloved, realizado con acuarela para capturar su personalidad y expresión única.',
+    image: '/images/custom-2.svg',
+    category: 'personalizados',
+    year: 2024,
+    dimensions: '40x30 cm',
+    available: false,
+    featured: false,
+    technique: 'Acuarela con técnica de capas y detalles secos',
+    materials: ['Acuarela profesional', 'Papel Arches', 'Pinceles de detalle'],
+    inspiration: 'Comisión especial para inmortalizar a una mascota querida, enfocándose en sus ojos expresivos y carácter juguetón.',
+    rating: 4.9,
+    totalRatings: 1
+  },
+  {
+    id: '12',
+    title: 'Paisaje de Recuerdos - Comisión',
+    description: 'Paisaje personalizado de un lugar especial para el cliente, recreado con técnica mixta para evocar memorias y emociones.',
+    image: '/images/custom-3.svg',
+    category: 'personalizados',
+    year: 2023,
+    dimensions: '80x60 cm',
+    available: false,
+    featured: false,
+    technique: 'Técnica mixta: acrílico y pasteles',
+    materials: ['Acrílico', 'Pasteles al óleo', 'Lienzo texturizado'],
+    inspiration: 'Recreación de un lugar significativo para el cliente, combinando fotografías y recuerdos para crear una obra única y personal.',
+    rating: 5.0,
+    totalRatings: 1
   }
 ];
 
-const categories = ['todas', 'oleo', 'acuarela', 'mixta', 'amigurumi'];
+const categories = ['todas', 'en-venta', 'oleo', 'acuarela', 'mixta', 'amigurumi', 'personalizados'];
 ---
 
 <Layout 
@@ -193,10 +241,12 @@ const categories = ['todas', 'oleo', 'acuarela', 'mixta', 'amigurumi'];
               data-category={category}
             >
               {category === 'todas' ? 'Todas las Obras' : 
+               category === 'en-venta' ? 'Obras en Venta' :
                category === 'oleo' ? 'Óleo' :
                category === 'acuarela' ? 'Acuarela' :
                category === 'mixta' ? 'Técnica Mixta' :
                category === 'amigurumi' ? 'Amigurumi' :
+               category === 'personalizados' ? 'Trabajos Personalizados' :
                category}
             </button>
           ))}
@@ -212,6 +262,9 @@ const categories = ['todas', 'oleo', 'acuarela', 'mixta', 'amigurumi'];
             <div 
               class="artwork-item slide-in-from-bottom" 
               data-category={artwork.category}
+              data-artwork-id={artwork.id}
+              data-available={artwork.available}
+              data-has-price={artwork.price !== undefined}
               style={`animation-delay: ${index * 0.1}s;`}
             >
               <ArtworkCardInteractive artwork={artwork} client:load />
@@ -246,8 +299,22 @@ const categories = ['todas', 'oleo', 'acuarela', 'mixta', 'amigurumi'];
         // Filter artworks
         artworkItems.forEach(item => {
           const itemCategory = item.getAttribute('data-category');
+          const isAvailable = item.getAttribute('data-available') === 'true';
+          const hasPrice = item.getAttribute('data-has-price') === 'true';
           const htmlItem = item as HTMLElement;
-          if (category === 'todas' || itemCategory === category) {
+          
+          let shouldShow = false;
+          
+          if (category === 'todas') {
+            shouldShow = true;
+          } else if (category === 'en-venta') {
+            // Show only available artworks with price
+            shouldShow = isAvailable && hasPrice;
+          } else {
+            shouldShow = itemCategory === category;
+          }
+          
+          if (shouldShow) {
             htmlItem.style.display = 'block';
             htmlItem.classList.add('fade-in');
           } else {

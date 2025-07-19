@@ -98,11 +98,11 @@
 
 /* Estilos personalizados para el arte */
 .art-gradient {
-  background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+  background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
 }
 
 .art-text-gradient {
-  background: linear-gradient(135deg, #e67e22 0%, #d35400 50%, #0369a1 100%);
+  background: linear-gradient(135deg, #ec4899 0%, #db2777 50%, #a821c4 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

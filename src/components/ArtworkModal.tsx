@@ -313,7 +313,7 @@ export default function ArtworkModal({ artwork, isOpen, onClose }: ArtworkModalP
 
                 {artwork.price && (
                   <div className="text-2xl font-bold text-primary-600 mb-4">
-                    ${artwork.price.toLocaleString()}
+                    ₡{artwork.price.toLocaleString()}
                   </div>
                 )}
               </div>

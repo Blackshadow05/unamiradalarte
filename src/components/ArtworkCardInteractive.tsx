@@ -93,7 +93,7 @@ export default function ArtworkCardInteractive({ artwork }: ArtworkCardProps) {
             <span>{artwork.dimensions}</span>
             {artwork.price && (
               <span className="font-semibold text-primary-600">
-                ${artwork.price.toLocaleString()}
+                ₡{artwork.price.toLocaleString()}
               </span>
             )}
           </div>

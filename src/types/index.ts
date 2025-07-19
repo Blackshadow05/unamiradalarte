@@ -3,7 +3,7 @@ export interface Artwork {
   title: string;
   description: string;
   image: string;
-  category: 'pintura' | 'acuarela' | 'oleo' | 'mixta' | 'amigurumi';
+  category: 'pintura' | 'acuarela' | 'oleo' | 'mixta' | 'amigurumi' | 'personalizados';
   year: number;
   dimensions: string;
   price?: number;
