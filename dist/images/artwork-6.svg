@@ -1,0 +1,18 @@
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gradient6" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#228b22;stop-opacity:1" />
+      <stop offset="33%" style="stop-color:#32cd32;stop-opacity:1" />
+      <stop offset="66%" style="stop-color:#90ee90;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#98fb98;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#gradient6)"/>
+  <path d="M50,150 Q100,50 150,150 T250,150 T350,150" stroke="rgba(255,255,255,0.4)" stroke-width="8" fill="none"/>
+  <path d="M80,200 Q130,100 180,200 T280,200 T380,200" stroke="rgba(255,255,255,0.3)" stroke-width="6" fill="none"/>
+  <circle cx="120" cy="80" r="25" fill="rgba(255,255,255,0.3)"/>
+  <circle cx="280" cy="220" r="30" fill="rgba(255,255,255,0.25)"/>
+  <text x="200" y="280" font-family="serif" font-size="18" font-weight="bold" text-anchor="middle" fill="white">
+    Naturaleza Abstracta
+  </text>
+</svg>
