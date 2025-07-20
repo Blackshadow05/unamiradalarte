@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 
 interface ToastProps {
   message: string
@@ -17,6 +17,7 @@ export default function Toast({ message, type, isVisible, onClose, duration = 40
       
       return () => clearTimeout(timer)
     }
+    return undefined
   }, [isVisible, duration, onClose])
 
   if (!isVisible) return null

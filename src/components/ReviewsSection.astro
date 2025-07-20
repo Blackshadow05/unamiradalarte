@@ -144,38 +144,15 @@ const allReviews = [
   }
 ];
 
-// Función para renderizar estrellas
-const renderStars = (rating: number) => {
-  return Array.from({ length: 5 }, (_, i) => i < rating ? '★' : '☆').join('');
-};
-
-// Función para formatear fecha
-const formatDate = (dateString: string) => {
-  return new Intl.DateTimeFormat('es-ES', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  }).format(new Date(dateString));
-};
-
-// Seleccionar las mejores reseñas (5 estrellas y verificadas primero)
-const featuredReviews = allReviews
-  .sort((a, b) => {
-    // Primero las verificadas
-    if (a.verified && !b.verified) return -1;
-    if (!a.verified && b.verified) return 1;
-    // Luego por rating
-    if (a.rating !== b.rating) return b.rating - a.rating;
-    // Finalmente por fecha
-    return new Date(b.date).getTime() - new Date(a.date).getTime();
-  })
-  .slice(0, 6); // Mostrar solo las 6 mejores
-
 // Calcular estadísticas
 const totalReviews = allReviews.length;
 const averageRating = allReviews.reduce((sum, review) => sum + review.rating, 0) / totalReviews;
 const fiveStarReviews = allReviews.filter(review => review.rating === 5).length;
 const verifiedReviews = allReviews.filter(review => review.verified).length;
+
+// Finalmente por fecha
+const sortedReviews = allReviews.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 6); // Mostrar solo las 6 mejores
+
 ---
 
 <section class="py-20 bg-gray-50">

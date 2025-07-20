@@ -169,44 +169,6 @@ export default function ArtworkModal({ artwork, isOpen, onClose }: ArtworkModalP
     };
   }, [isOpen]);
 
-  const handleSubmitReview = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!userRating || !comment.trim() || !userName.trim()) {
-      if (typeof window !== 'undefined') {
-        alert('Por favor completa todos los campos');
-      }
-      return;
-    }
-
-    // Función auxiliar para obtener la fecha como string
-    const getCurrentDate = (): string => {
-      const now = new Date();
-      return now.toISOString().substring(0, 10);
-    };
-
-    const newReview: Review = {
-      id: Date.now().toString(),
-      artworkId: artwork?.id || '',
-      userName: userName.trim(),
-      rating: userRating,
-      comment: comment.trim(),
-      date: getCurrentDate(),
-      verified: false
-    };
-
-    setReviews(prev => [newReview, ...prev]);
-    
-    // Reset form
-    setUserRating(0);
-    setComment('');
-    setUserName('');
-    
-    if (typeof window !== 'undefined') {
-      alert('¡Gracias por tu reseña!');
-    }
-  };
-
   const renderStars = (rating: number, interactive = false, size = 'w-5 h-5') => {
     return (
       <div className="flex items-center space-x-1">
@@ -233,14 +195,6 @@ export default function ArtworkModal({ artwork, isOpen, onClose }: ArtworkModalP
         ))}
       </div>
     );
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Intl.DateTimeFormat('es-ES', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    }).format(new Date(dateString));
   };
 
   if (!isOpen || !artwork) return null;

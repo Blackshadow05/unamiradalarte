@@ -71,7 +71,7 @@ export default function RandomRatingsCarousel() {
 
       return () => clearTimeout(timer)
     }
-  }, [currentIndex])
+  }, [currentIndex, ratings.length, displayedRatings.length])
 
   const loadRatings = async () => {
     try {
@@ -110,7 +110,8 @@ export default function RandomRatingsCarousel() {
     
     if (availableRatings.length === 0) return
 
-    const randomNewRating = availableRatings[Math.floor(Math.random() * availableRatings.length)]
+    const randomIndex = Math.floor(Math.random() * availableRatings.length)
+    const randomNewRating = availableRatings[randomIndex]!
     
     setDisplayedRatings(prev => {
       const newRatings = [...prev]
