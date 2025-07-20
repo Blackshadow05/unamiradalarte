@@ -1,5 +1,6 @@
 ---
 import '../styles/globals.css';
+import GaleriaStats from '../components/GaleriaStats';
 
 // Dashboard - Solo accesible por URL directa
 const title = "Dashboard - Una mirada al arte";
@@ -85,95 +86,8 @@ const description = "Panel de administración para gestionar tu sitio web de art
       </div>
     </div>
 
-    <!-- Stats Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16 animate-fade-in" style="animation-delay: 0.2s;">
-      <!-- Card 1 -->
-      <div class="bg-white/80 backdrop-blur-xl rounded-3xl p-8 border border-blue-200/30 shadow-2xl shadow-blue-500/10 hover:shadow-3xl hover:shadow-blue-500/20 transition-all duration-500 hover:-translate-y-2 group relative overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-indigo-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-        <div class="relative z-10">
-          <div class="flex items-center justify-between mb-4">
-            <div class="w-16 h-16 bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center shadow-xl shadow-blue-500/25 group-hover:scale-110 transition-transform duration-300">
-              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-              </svg>
-            </div>
-          </div>
-          <p class="text-sm font-semibold text-blue-600 mb-2 uppercase tracking-wider">Total Obras</p>
-          <p class="text-4xl font-bold text-gray-900 mb-2">24</p>
-          <p class="text-sm text-emerald-600 font-semibold flex items-center">
-            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-            </svg>
-            +3 este mes
-          </p>
-        </div>
-      </div>
-
-      <!-- Card 2 -->
-      <div class="bg-white/80 backdrop-blur-xl rounded-3xl p-8 border border-emerald-200/30 shadow-2xl shadow-emerald-500/10 hover:shadow-3xl hover:shadow-emerald-500/20 transition-all duration-500 hover:-translate-y-2 group relative overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-br from-emerald-50/50 to-green-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-        <div class="relative z-10">
-          <div class="flex items-center justify-between mb-4">
-            <div class="w-16 h-16 bg-gradient-to-br from-emerald-500 via-green-600 to-teal-600 rounded-2xl flex items-center justify-center shadow-xl shadow-emerald-500/25 group-hover:scale-110 transition-transform duration-300">
-              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
-              </svg>
-            </div>
-          </div>
-          <p class="text-sm font-semibold text-emerald-600 mb-2 uppercase tracking-wider">Reseñas</p>
-          <p class="text-4xl font-bold text-gray-900 mb-2">156</p>
-          <p class="text-sm text-yellow-600 font-semibold flex items-center">
-            <span class="text-yellow-400 mr-1">★★★★★</span>
-            4.8 promedio
-          </p>
-        </div>
-      </div>
-
-      <!-- Card 3 -->
-      <div class="bg-white/80 backdrop-blur-xl rounded-3xl p-8 border border-amber-200/30 shadow-2xl shadow-amber-500/10 hover:shadow-3xl hover:shadow-amber-500/20 transition-all duration-500 hover:-translate-y-2 group relative overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-br from-amber-50/50 to-yellow-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-        <div class="relative z-10">
-          <div class="flex items-center justify-between mb-4">
-            <div class="w-16 h-16 bg-gradient-to-br from-amber-500 via-yellow-600 to-orange-600 rounded-2xl flex items-center justify-center shadow-xl shadow-amber-500/25 group-hover:scale-110 transition-transform duration-300">
-              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-              </svg>
-            </div>
-          </div>
-          <p class="text-sm font-semibold text-amber-600 mb-2 uppercase tracking-wider">Visitantes</p>
-          <p class="text-4xl font-bold text-gray-900 mb-2">2.4K</p>
-          <p class="text-sm text-emerald-600 font-semibold flex items-center">
-            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-            </svg>
-            +12% este mes
-          </p>
-        </div>
-      </div>
-
-      <!-- Card 4 -->
-      <div class="bg-white/80 backdrop-blur-xl rounded-3xl p-8 border border-purple-200/30 shadow-2xl shadow-purple-500/10 hover:shadow-3xl hover:shadow-purple-500/20 transition-all duration-500 hover:-translate-y-2 group relative overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-br from-purple-50/50 to-pink-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-        <div class="relative z-10">
-          <div class="flex items-center justify-between mb-4">
-            <div class="w-16 h-16 bg-gradient-to-br from-purple-500 via-pink-600 to-rose-600 rounded-2xl flex items-center justify-center shadow-xl shadow-purple-500/25 group-hover:scale-110 transition-transform duration-300">
-              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
-              </svg>
-            </div>
-          </div>
-          <p class="text-sm font-semibold text-purple-600 mb-2 uppercase tracking-wider">Ventas</p>
-          <p class="text-4xl font-bold text-gray-900 mb-2">₡850K</p>
-          <p class="text-sm text-emerald-600 font-semibold flex items-center">
-            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-            </svg>
-            +8% este mes
-          </p>
-        </div>
-      </div>
-    </div>
+    <!-- Stats Cards from Supabase -->
+    <GaleriaStats client:only="react" />
 
     <!-- Quick Actions -->
     <div class="mb-16 animate-slide-in-from-bottom" style="animation-delay: 0.4s;">
@@ -251,68 +165,7 @@ const description = "Panel de administración para gestionar tu sitio web de art
       </div>
     </div>
 
-    <!-- Recent Activity -->
-    <div class="bg-white/90 backdrop-blur-xl rounded-3xl border border-gray-200/30 shadow-2xl shadow-gray-500/10 overflow-hidden animate-fade-in" style="animation-delay: 0.6s;">
-      <div class="px-8 py-6 border-b border-gray-200/30 bg-gradient-to-r from-gray-50/50 to-purple-50/50">
-        <h3 class="text-2xl font-bold bg-gradient-to-r from-gray-900 to-purple-900 bg-clip-text text-transparent">Actividad Reciente</h3>
-        <p class="text-sm text-gray-600 mt-1">Últimas acciones en tu sitio web</p>
-      </div>
-      <div class="p-8">
-        <div class="space-y-6">
-          <!-- Activity Item 1 -->
-          <div class="flex items-center space-x-6 p-4 rounded-2xl hover:bg-gradient-to-r hover:from-green-50/50 hover:to-emerald-50/50 transition-all duration-300 group">
-            <div class="w-14 h-14 bg-gradient-to-br from-green-400 via-emerald-500 to-teal-500 rounded-2xl flex items-center justify-center shadow-lg shadow-green-500/25 group-hover:scale-110 transition-transform duration-300">
-              <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-              </svg>
-            </div>
-            <div class="flex-1">
-              <p class="text-base font-semibold text-gray-900 mb-1">Nueva obra agregada</p>
-              <p class="text-sm text-gray-600">"Paisaje Abstracto" fue publicada exitosamente</p>
-            </div>
-            <div class="text-right">
-              <span class="text-xs font-medium text-green-600 bg-green-100 px-2 py-1 rounded-full">Nuevo</span>
-              <p class="text-xs text-gray-400 mt-1">hace 2h</p>
-            </div>
-          </div>
-
-          <!-- Activity Item 2 -->
-          <div class="flex items-center space-x-6 p-4 rounded-2xl hover:bg-gradient-to-r hover:from-blue-50/50 hover:to-indigo-50/50 transition-all duration-300 group">
-            <div class="w-14 h-14 bg-gradient-to-br from-blue-400 via-indigo-500 to-purple-500 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/25 group-hover:scale-110 transition-transform duration-300">
-              <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path>
-              </svg>
-            </div>
-            <div class="flex-1">
-              <p class="text-base font-semibold text-gray-900 mb-1">Nueva reseña recibida</p>
-              <p class="text-sm text-gray-600">★★★★★ "Increíble trabajo artístico"</p>
-            </div>
-            <div class="text-right">
-              <span class="text-xs font-medium text-yellow-600 bg-yellow-100 px-2 py-1 rounded-full">5 estrellas</span>
-              <p class="text-xs text-gray-400 mt-1">hace 4h</p>
-            </div>
-          </div>
-
-          <!-- Activity Item 3 -->
-          <div class="flex items-center space-x-6 p-4 rounded-2xl hover:bg-gradient-to-r hover:from-purple-50/50 hover:to-pink-50/50 transition-all duration-300 group">
-            <div class="w-14 h-14 bg-gradient-to-br from-purple-400 via-pink-500 to-rose-500 rounded-2xl flex items-center justify-center shadow-lg shadow-purple-500/25 group-hover:scale-110 transition-transform duration-300">
-              <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-              </svg>
-            </div>
-            <div class="flex-1">
-              <p class="text-base font-semibold text-gray-900 mb-1">Pico de visitantes</p>
-              <p class="text-sm text-gray-600">245 visitantes únicos registrados hoy</p>
-            </div>
-            <div class="text-right">
-              <span class="text-xs font-medium text-purple-600 bg-purple-100 px-2 py-1 rounded-full">Trending</span>
-              <p class="text-xs text-gray-400 mt-1">hace 6h</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- Recent Activity is now included in GaleriaStats component -->
   </main>
 
   <!-- Footer -->
