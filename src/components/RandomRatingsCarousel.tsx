@@ -44,6 +44,7 @@ export default function RandomRatingsCarousel() {
 
       return () => clearInterval(interval)
     }
+    return undefined
   }, [ratings])
 
   useEffect(() => {
@@ -71,6 +72,7 @@ export default function RandomRatingsCarousel() {
 
       return () => clearTimeout(timer)
     }
+    return undefined
   }, [currentIndex, ratings.length, displayedRatings.length])
 
   const loadRatings = async () => {
