@@ -13,5 +13,16 @@ export default defineConfig({
   output: 'static',
   build: {
     inlineStylesheets: 'auto'
+  },
+  vite: {
+    build: {
+      rollupOptions: {
+        onwarn(warning, warn) {
+          // Ignore TypeScript unused variable warnings
+          if (warning.code === 'TS6133') return;
+          warn(warning);
+        }
+      }
+    }
   }
 });
