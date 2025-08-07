@@ -26,10 +26,10 @@ export function Button({
       className={cn(
         'inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed',
         {
-          'bg-primary-500 text-white hover:bg-primary-600 focus:ring-primary-500 shadow-lg hover:shadow-xl': variant === 'primary',
-          'bg-accent-500 text-white hover:bg-accent-600 focus:ring-accent-500 shadow-lg hover:shadow-xl': variant === 'secondary',
-          'border-2 border-primary-500 text-primary-500 hover:bg-primary-500 hover:text-white focus:ring-primary-500': variant === 'outline',
-          'text-gray-600 hover:text-primary-500 hover:bg-primary-50 focus:ring-primary-500': variant === 'ghost',
+          'bg-brand-magenta text-white hover:bg-brand-magenta-dark focus:ring-brand-magenta shadow-lg hover:shadow-xl': variant === 'primary',
+          'bg-brand-magenta-light text-white hover:bg-brand-magenta focus:ring-brand-magenta-dark shadow-lg hover:shadow-xl': variant === 'secondary',
+          'border-2 border-brand-magenta text-brand-magenta hover:bg-brand-magenta hover:text-white focus:ring-brand-magenta': variant === 'outline',
+          'text-brand-magenta hover:text-brand-magenta-dark hover:bg-brand-magenta/10 focus:ring-brand-magenta': variant === 'ghost',
         },
         {
           'px-3 py-1.5 text-sm': size === 'sm',

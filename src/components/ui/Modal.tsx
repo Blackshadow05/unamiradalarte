@@ -5,11 +5,15 @@ import { X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { BaseProps } from '@/types';
 
+type ModalSize = 'sm' | 'md' | 'lg' | 'xl' | 'xl-plus' | 'full';
+
 interface ModalProps extends BaseProps {
   isOpen: boolean;
   onClose: () => void;
   title?: string;
-  size?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
+  size?: ModalSize;
+  children?: React.ReactNode;
+  className?: string;
 }
 
 export function Modal({ 
@@ -50,13 +54,23 @@ export function Modal({
 
   if (!isOpen) return null;
 
-  const sizeClasses = {
+  const sizeClasses: Record<ModalSize, string> = {
     sm: 'max-w-md',
     md: 'max-w-lg',
     lg: 'max-w-2xl',
     xl: 'max-w-4xl',
+    'xl-plus': 'max-w-7xl min-h-[85vh]',
     full: 'max-w-7xl',
   };
+
+  // Typography tweaks for larger PC view
+  const headerTitleClass = size === 'xl-plus' 
+    ? 'text-5xl md:text-6xl font-bold text-gray-900'
+    : 'text-3xl md:text-4xl font-bold text-gray-900';
+
+  const contentTextClass = size === 'xl-plus' 
+    ? 'text-xl md:text-2xl leading-relaxed'
+    : 'text-base md:text-lg leading-relaxed';
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
@@ -79,7 +93,7 @@ export function Modal({
           {/* Header */}
           {title && (
             <div className="flex items-center justify-between p-6 border-b border-gray-100">
-              <h2 className="text-2xl font-bold text-gray-900">{title}</h2>
+              <h2 className={headerTitleClass}>{title}</h2>
               <button
                 onClick={onClose}
                 className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
@@ -90,7 +104,7 @@ export function Modal({
           )}
           
           {/* Content */}
-          <div className={cn(!title && 'p-6')}>
+          <div className={cn(!title && 'p-6', contentTextClass)}>
             {!title && (
               <button
                 onClick={onClose}

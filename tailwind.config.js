@@ -29,6 +29,11 @@ module.exports = {
           800: '#a21caf',
           900: '#86198f',
         },
+        brand: {
+          magenta: '#D4007E',
+          magentaDark: '#B10063',
+          magentaLight: '#FF4DAD',
+        },
       },
       animation: {
         'slide-up': 'slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1)',

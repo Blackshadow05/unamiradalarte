@@ -68,7 +68,7 @@ export function ArtworkDetail({
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="xl">
+    <Modal isOpen={isOpen} onClose={onClose} size="xl-plus">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 p-4 sm:p-6">
         {/* Image */}
         <div className="relative -mx-4 sm:mx-0">
@@ -79,7 +79,7 @@ export function ArtworkDetail({
               alt={artwork.title}
               width={1200}
               height={1600}
-              className="w-full h-[62vh] object-cover rounded-none shadow-lg"
+              className="w-full h-[60vh] md:h-[70vh] object-contain object-center bg-black/5 rounded-none shadow-lg"
               sizes="100vw"
               priority={false}
             />
@@ -122,15 +122,15 @@ export function ArtworkDetail({
           {/* Header */}
           <div>
             <h1 className="text-3xl font-bold mb-2">{artwork.title}</h1>
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center space-x-4">
+            <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
+              <div className="flex items-center space-x-4 min-w-0">
                 <StarRating rating={artwork.rating} readonly showValue />
-                <span className="text-sm text-gray-500">
+                <span className="text-sm text-gray-500 truncate">
                   ({artwork.reviewCount} reseñas)
                 </span>
               </div>
-              <div className="text-2xl font-bold text-primary-500">
-                {formatPrice(artwork.price)}
+              <div className="text-xl sm:text-2xl font-bold text-primary-500 min-w-0 text-right">
+                <span className="block truncate">{formatPrice(artwork.price)}</span>
               </div>
             </div>
             <p className="text-gray-600 leading-relaxed">{artwork.description}</p>
@@ -213,7 +213,7 @@ export function ArtworkDetail({
 
                 <div>
                   <h4 className="font-medium mb-2">Inspiración</h4>
-                  <p className="text-gray-600 text-sm leading-relaxed">
+                  <p className="text-gray-600 text-base md:text-lg lg:text-xl leading-relaxed">
                     {artwork.inspiration}
                   </p>
                 </div>

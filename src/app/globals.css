@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --brand-magenta: #D4007E;
+  --brand-magenta-dark: #B10063;
+  --brand-magenta-light: #FF4DAD;
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -28,7 +34,10 @@
   }
   
   .text-gradient {
-    @apply bg-gradient-to-r from-primary-500 to-accent-500 bg-clip-text text-transparent;
+    background: linear-gradient(to right, var(--brand-magenta), var(--brand-magenta-dark));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
   
   .glass-effect {
