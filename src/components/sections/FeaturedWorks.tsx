@@ -10,6 +10,12 @@ import { getObrasDestacadas, getArtworkRatings, addArtworkRating, getArtworkRati
 import { GaleriaItem, Artwork, Review, ReviewForm, ArtworkRating } from '@/types';
 import { Brush, Clock, Calendar, Palette } from 'lucide-react';
 
+// Extensión local del tipo para acceder a nuevas columnas opcionales
+type GaleriaItemWithImages = GaleriaItem & {
+  Imagen_horizontal?: string | null;
+  Imagen_vertitical?: string | null;
+};
+
 // Función para convertir ArtworkRating a Review
 function convertRatingToReview(rating: ArtworkRating): Review {
   return {
@@ -84,7 +90,7 @@ const generateMockReviews = (artworkId: string): Review[] => {
 };
 
 export function FeaturedWorks() {
-  const [obras, setObras] = useState<GaleriaItem[]>([]);
+  const [obras, setObras] = useState<GaleriaItemWithImages[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedArtwork, setSelectedArtwork] = useState<Artwork | null>(null);
@@ -94,12 +100,18 @@ export function FeaturedWorks() {
     async function fetchObrasDestacadas() {
       try {
         setLoading(true);
+        // Traer obras destacadas desde supabase (puede traer todas)
         const data = await getObrasDestacadas();
+
+        // Filtrar por categoría "Obras Destacadas"
+        const soloDestacadas = (data || []).filter(
+          (obra) => (obra.Categoria || '').toLowerCase() === 'obras destacadas'
+        );
         
         // Cargar reseñas reales y estadísticas para cada obra
         const realReviews: { [key: string]: Review[] } = {};
         const updatedObras = await Promise.all(
-          data.map(async (obra) => {
+          (soloDestacadas as GaleriaItemWithImages[]).map(async (obra) => {
             const artworkId = obra.id.toString();
             
             // Obtener reseñas reales
@@ -131,7 +143,23 @@ export function FeaturedWorks() {
   }, []);
 
   const handleViewArtwork = (obra: GaleriaItem) => {
-    const artwork = convertGaleriaToArtwork(obra);
+    // Asegurar que el modal use las nuevas columnas de imagen si existen
+    const obraWithImgs = obra as GaleriaItemWithImages;
+    const artwork = {
+      ...convertGaleriaToArtwork(obra as any),
+      image:
+        obraWithImgs.Imagen_horizontal ||
+        obraWithImgs.Imagen_vertitical ||
+        obra.image_gallery ||
+        obra.image_thumbnail ||
+        obra.image ||
+        '/api/placeholder/400/300',
+      // URL vertical para móviles si existe
+      verticalUrl: obraWithImgs.Imagen_vertitical || null,
+      // Mantener featured=true para esta sección
+      featured: true as const,
+      category: 'destacadas' as const,
+    } as unknown as Artwork & { verticalUrl?: string | null };
     setSelectedArtwork(artwork);
   };
 
@@ -247,7 +275,7 @@ export function FeaturedWorks() {
                 <Card key={obra.id} className="overflow-hidden hover-lift">
                   <div className="relative">
                     <Image
-                      src={obra.image_gallery || obra.image_thumbnail || obra.image || '/api/placeholder/400/300'}
+                      src={(obra as GaleriaItemWithImages).Imagen_horizontal || (obra as GaleriaItemWithImages).Imagen_vertitical || obra.image_gallery || obra.image_thumbnail || obra.image || '/api/placeholder/400/300'}
                       alt={obra.Nombre_obra || 'Obra sin título'}
                       width={400}
                       height={300}

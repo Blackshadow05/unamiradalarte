@@ -69,16 +69,32 @@ export function ArtworkDetail({
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="xl">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 p-4 sm:p-6">
         {/* Image */}
-        <div className="relative">
-          <Image
-            src={artwork.image}
-            alt={artwork.title}
-            width={600}
-            height={700}
-            className="w-full h-96 lg:h-[500px] object-cover rounded-xl shadow-lg"
-          />
+        <div className="relative -mx-4 sm:mx-0">
+          {/* Móvil: no adaptar al contenedor para evitar desbordes laterales; usar alto fijo y object-cover */}
+          <div className="block sm:hidden">
+            <Image
+              src={(artwork as any).verticalUrl || artwork.image}
+              alt={artwork.title}
+              width={1200}
+              height={1600}
+              className="w-full h-[62vh] object-cover rounded-none shadow-lg"
+              sizes="100vw"
+              priority={false}
+            />
+          </div>
+          {/* Desktop/Tablet: mantener imagen adaptativa con fill y object-contain */}
+          <div className="hidden sm:block relative w-full" style={{ height: '500px' }}>
+            <Image
+              src={artwork.image}
+              alt={artwork.title}
+              fill
+              className="absolute inset-0 w-full h-full object-contain bg-black/5 rounded-xl shadow-lg"
+              sizes="(max-width: 1024px) 50vw, 600px"
+              priority={false}
+            />
+          </div>
           
           {/* Status badge */}
           <div className="absolute top-4 left-4">
@@ -102,7 +118,7 @@ export function ArtworkDetail({
         </div>
 
         {/* Content */}
-        <div className="space-y-6">
+        <div className="space-y-6 px-1 sm:px-0">
           {/* Header */}
           <div>
             <h1 className="text-3xl font-bold mb-2">{artwork.title}</h1>

@@ -2,16 +2,21 @@ import { supabase } from './supabase';
 import { Artwork, Review } from '@/types';
 
 // Tipos para la tabla Galeria (compatibilidad con /dashboard/obras)
+// Nota: se mantienen campos legacy para compatibilidad de lectura con registros antiguos
 export interface GaleriaItem {
   id: number;
   created_at: string;
   Nombre_obra: string | null;
   Descripcion: string | null;
   Categoria: string | null;
+  // Legacy (pueden existir en registros antiguos)
   image: string | null;
   image_thumbnail: string | null;
   image_gallery: string | null;
   image_detail: string | null;
+  // Nuevos campos solicitados
+  Imagen_horizontal?: string | null;
+  Imagen_vertitical?: string | null; // nombre exacto según DDL
   Año: number | null;
   Dimensiones: string | null;
   Tecnica: string | null;
@@ -46,8 +51,121 @@ export async function getGaleriaItems() {
     .from('Galeria')
     .select('*')
     .order('created_at', { ascending: false });
-  if (error) throw error;
+  if (error) {
+    console.error('Supabase getGaleriaItems error:', error);
+    throw error;
+  }
   return data as GaleriaItem[];
+}
+
+/**
+ * Inserta una nueva obra en Galeria.
+ * Acepta un objeto parcial con los campos permitidos.
+ */
+export async function createGaleriaItem(payload: Partial<GaleriaItem> & {
+  Imagen_horizontal?: string | null;
+  Imagen_vertitical?: string | null;
+}): Promise<GaleriaItem> {
+  // Construir fecha local del dispositivo sin zona horaria: 'YYYY-MM-DD HH:mm:ss'
+  const now = new Date();
+  const y = now.getFullYear();
+  const mo = String(now.getMonth() + 1).padStart(2, '0');
+  const d = String(now.getDate()).padStart(2, '0');
+  const hh = String(now.getHours()).padStart(2, '0');
+  const mm = String(now.getMinutes()).padStart(2, '0');
+  const ss = String(now.getSeconds()).padStart(2, '0');
+  const localDateTime = `${y}-${mo}-${d} ${hh}:${mm}:${ss}`;
+
+  // Mapeo EXPLÍCITO a columnas exactas, incluyendo created_at
+  const mapped: Record<string, any> = { created_at: localDateTime };
+
+  // Campos de texto
+  if (payload.Nombre_obra) mapped['Nombre_obra'] = payload.Nombre_obra;
+  if (payload.Descripcion) mapped['Descripcion'] = payload.Descripcion;
+  if (payload.Categoria) mapped['Categoria'] = payload.Categoria;
+  if ((payload as any).Estado) mapped['Estado'] = (payload as any).Estado;
+  if ((payload as any).Dimensiones) mapped['Dimensiones'] = (payload as any).Dimensiones;
+  if ((payload as any).Tecnica) mapped['Tecnica'] = (payload as any).Tecnica;
+  if ((payload as any).Tiempo_creacion) mapped['Tiempo_creacion'] = (payload as any).Tiempo_creacion;
+  if ((payload as any).Materiales) mapped['Materiales'] = (payload as any).Materiales;
+  if ((payload as any).Inspiracion) mapped['Inspiracion'] = (payload as any).Inspiracion;
+
+  // Números
+  if (payload.Año !== undefined && payload.Año !== null && !Number.isNaN(payload.Año)) {
+    mapped['Año'] = payload.Año;
+  }
+
+  // Precio es TEXT según tu DDL
+  if ((payload as any).Precio !== undefined && (payload as any).Precio !== null && String((payload as any).Precio).trim() !== '') {
+    mapped['Precio'] = String((payload as any).Precio);
+  }
+
+  // Imagen principal legacy (si existiera)
+  if ((payload as any).image) mapped['image'] = (payload as any).image;
+
+  // Nuevas columnas de imágenes
+  if (payload.Imagen_horizontal) mapped['Imagen_horizontal'] = payload.Imagen_horizontal;
+  if (payload.Imagen_vertitical) mapped['Imagen_vertitical'] = payload.Imagen_vertitical;
+
+  const { data, error } = await supabase
+    .from('Galeria')
+    .insert(mapped)
+    .select('*')
+    .single();
+
+  if (error) {
+    console.error('Supabase createGaleriaItem error:', error, 'payload:', mapped);
+    throw error;
+  }
+  return data as GaleriaItem;
+}
+
+/**
+ * Actualiza una obra por id en Galeria.
+ */
+export async function updateGaleriaItem(id: number, payload: Partial<GaleriaItem> & {
+  Imagen_horizontal?: string | null;
+  Imagen_vertitical?: string | null;
+}): Promise<GaleriaItem> {
+  const mapped: Record<string, any> = {};
+
+  if (payload.Nombre_obra !== undefined) mapped['Nombre_obra'] = payload.Nombre_obra;
+  if (payload.Descripcion !== undefined) mapped['Descripcion'] = payload.Descripcion;
+  if (payload.Categoria !== undefined) mapped['Categoria'] = payload.Categoria;
+  if (payload.Imagen_horizontal !== undefined) mapped['Imagen_horizontal'] = payload.Imagen_horizontal;
+  if (payload.Imagen_vertitical !== undefined) mapped['Imagen_vertitical'] = payload.Imagen_vertitical;
+
+  if (payload.Año !== undefined && payload.Año !== null && !Number.isNaN(payload.Año)) {
+    mapped['Año'] = payload.Año;
+  }
+
+  if ((payload as any).Dimensiones !== undefined) mapped['Dimensiones'] = (payload as any).Dimensiones;
+  if ((payload as any).Tecnica !== undefined) mapped['Tecnica'] = (payload as any).Tecnica;
+  if ((payload as any).Tiempo_creacion !== undefined) mapped['Tiempo_creacion'] = (payload as any).Tiempo_creacion;
+  if ((payload as any).Materiales !== undefined) mapped['Materiales'] = (payload as any).Materiales;
+  if ((payload as any).Inspiracion !== undefined) mapped['Inspiracion'] = (payload as any).Inspiracion;
+
+  if ((payload as any).Estado !== undefined) mapped['Estado'] = (payload as any).Estado;
+
+  // "Precio" es text en tu DDL; lo convertimos a string si viene numérico
+  if ((payload as any).Precio !== undefined && (payload as any).Precio !== null) {
+    mapped['Precio'] = String((payload as any).Precio);
+  }
+
+  if ((payload as any).image !== undefined) mapped['image'] = (payload as any).image;
+
+  const { data, error } = await supabase
+    .from('Galeria')
+    .update(mapped)
+    .eq('id', id)
+    .select('*')
+    .single();
+
+  if (error) {
+    console.error('Supabase updateGaleriaItem error:', error, 'payload:', mapped);
+    throw error;
+  }
+  return data as GaleriaItem;
 }
 
 export async function deleteGaleriaItem(id: number) {
@@ -63,7 +181,9 @@ export async function deleteImage(imageUrl: string): Promise<void> {
   try {
     const url = new URL(imageUrl);
     const parts = url.pathname.split('/');
-    const filePath = parts.slice(-2).join('/'); // obras/filename.ext
+    // encontrar el segmento '/object/public/galeria/' y recuperar lo que sigue
+    const idx = parts.findIndex(p => p === 'galeria');
+    const filePath = idx >= 0 ? parts.slice(idx + 1).join('/') : parts.slice(-2).join('/'); // obras/filename.ext
     const { error } = await supabase.storage
       .from('galeria')
       .remove([filePath]);
@@ -71,6 +191,42 @@ export async function deleteImage(imageUrl: string): Promise<void> {
   } catch {
     // ignorar errores de parseo
   }
+}
+
+/**
+ * Sube un archivo (sin redimensionar) al bucket 'galeria/obras'
+ * y devuelve la URL pública directa al archivo.
+ * - Asegura path correcto: obras/{timestamp_random.ext}
+ * - Devuelve la URL firmada pública (si el bucket es público, es una URL pública estándar)
+ */
+export async function uploadSingleImage(file: File): Promise<string> {
+  const safeName = file.name.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9._-]/g, '');
+  const fileExt = safeName.includes('.') ? safeName.split('.').pop() : 'jpg';
+  const unique = `${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
+  const fileName = `${unique}.${fileExt}`;
+  const path = `obras/${fileName}`;
+
+  // Importante en navegador: convertir File a ArrayBuffer para asegurar compatibilidad
+  const arrayBuffer = await file.arrayBuffer();
+
+  const { error: uploadError } = await supabase.storage
+    .from('galeria')
+    .upload(path, new Blob([arrayBuffer], { type: file.type || 'image/jpeg' }), {
+      cacheControl: '3600',
+      upsert: false,
+      contentType: file.type || 'image/jpeg'
+    });
+
+  if (uploadError) {
+    console.error('Error subiendo a storage:', uploadError);
+    throw uploadError;
+  }
+
+  const { data } = supabase.storage.from('galeria').getPublicUrl(path);
+  if (!data?.publicUrl) {
+    throw new Error('No se pudo obtener la URL pública de la imagen');
+  }
+  return data.publicUrl;
 }
 
 /**

@@ -7,7 +7,6 @@ import { FeaturedWorks } from '@/components/sections/FeaturedWorks';
 import { Services } from '@/components/sections/Services';
 import { Contact } from '@/components/sections/Contact';
 import { RandomReviews } from '@/components/sections/RandomReviews';
-import { SupabaseDebug } from '@/components/debug/SupabaseDebug';
 
 import { useEffect, useRef } from 'react';
 import { addVisitRow } from '@/lib/supabase-queries';
@@ -88,7 +87,6 @@ export default function HomePage() {
       <RandomReviews />
       <Contact />
       <SimpleFooter />
-      <SupabaseDebug />
     </main>
   );
 }

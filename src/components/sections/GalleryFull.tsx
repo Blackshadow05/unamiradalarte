@@ -32,8 +32,9 @@ function convertRatingToReview(rating: ArtworkRating): Review {
 
 // Función para convertir datos de Supabase al formato Artwork
 function convertGaleriaToArtwork(galeriaItem: GaleriaItem & { averageRating?: number; totalReviews?: number }): Artwork {
-  const parsePrice = (precio: string | null): number => {
-    if (!precio) return 0;
+  const parsePrice = (precio: string | number | null): number => {
+    if (precio === null || precio === undefined) return 0;
+    if (typeof precio === 'number') return isNaN(precio) ? 0 : precio;
     const numericPrice = parseFloat(precio.replace(/[^\d.-]/g, ''));
     return isNaN(numericPrice) ? 0 : numericPrice;
   };
@@ -42,8 +43,8 @@ function convertGaleriaToArtwork(galeriaItem: GaleriaItem & { averageRating?: nu
     id: galeriaItem.id.toString(),
     title: galeriaItem.Nombre_obra || 'Sin título',
     description: galeriaItem.Descripcion || 'Sin descripción',
-    price: parsePrice(galeriaItem.Precio), // Convertir precio correctamente
-    image: galeriaItem.image_gallery || galeriaItem.image || '/api/placeholder/400/500',
+    price: parsePrice(galeriaItem.Precio as any), // Convertir precio correctamente (DB text o number)
+    image: galeriaItem.Imagen_horizontal || galeriaItem.Imagen_vertitical || galeriaItem.image_gallery || galeriaItem.image || '/api/placeholder/400/500',
     category: (galeriaItem.Categoria?.toLowerCase() as any) || 'general',
     featured: galeriaItem.Categoria === 'Obras Destacadas', // Marcar como destacada si es de esa categoría
     dimensions: galeriaItem.Dimensiones || '',
@@ -601,17 +602,19 @@ export function GalleryFull() {
                 </div>
 
                 {/* Grid de obras */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12">
                     {currentArtworks.map((artwork) => (
                         <Card key={artwork.id} className="group">
-                            <div className="relative overflow-hidden">
+                            {/* Imagen más ancha en móvil */}
+                            <div className="relative overflow-hidden -mx-4 sm:mx-0">
                                 <Image
                                     src={artwork.image}
                                     alt={artwork.title}
-                                    width={400}
-                                    height={500}
-                                    className="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-110"
+                                    width={1200}
+                                    height={900}
+                                    className="w-[100vw] sm:w-full h-[56vh] sm:h-80 object-cover transition-transform duration-500 group-hover:scale-110"
                                     loading="lazy"
+                                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                                     placeholder="blur"
                                     blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
                                 />
@@ -662,7 +665,7 @@ export function GalleryFull() {
                                 </div>
                             </div>
 
-                            <div className="p-6">
+                            <div className="p-4 sm:p-6">
                                 <div className="flex items-start justify-between mb-2">
                                     <h3 className="text-xl font-bold text-gray-900">{artwork.title}</h3>
                                     {artwork.price > 0 && (
