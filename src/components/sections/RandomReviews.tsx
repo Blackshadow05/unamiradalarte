@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Card } from '@/components/ui/Card';
 import { StarRating } from '@/components/ui/StarRating';
-import { getArtworkRatings } from '@/lib/supabase';
+import { getAllArtworkRatings } from '@/lib/supabase';
 import { ArtworkRating } from '@/types';
 import { Quote, User, Sparkles } from 'lucide-react';
 
@@ -24,18 +24,15 @@ export function RandomReviews() {
       try {
         setLoading(true);
         
-        // Obtener reseñas de diferentes obras (simulando IDs de obras)
-        const artworkIds = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+        // Fetch all artwork ratings in a single query
+        // and enrich with artwork titles
         const allReviews: ReviewWithArtwork[] = [];
-        
-        for (const artworkId of artworkIds) {
-          const artworkReviews = await getArtworkRatings(artworkId);
-          const reviewsWithTitle = artworkReviews.map(review => ({
-            ...review,
-            artwork_title: getArtworkTitle(artworkId)
-          }));
-          allReviews.push(...reviewsWithTitle);
-        }
+        const allRatings = await getAllArtworkRatings();
+        const enriched = (allRatings || []).map((review) => ({
+          ...review,
+          artwork_title: getArtworkTitle(review.artwork_id)
+        }));
+        allReviews.push(...enriched);
         
         // Si no hay reseñas reales, usar algunas de ejemplo
         if (allReviews.length === 0) {
@@ -55,6 +52,45 @@ export function RandomReviews() {
 
     loadAllReviews();
   }, []);
+
+  // Reveal cards on scroll (IntersectionObserver)
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const el = entry.target as HTMLElement;
+          el.classList.add('revealed');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    const cards = document.querySelectorAll('.review-card');
+    cards.forEach((card) => observer.observe(card as Element));
+
+    return () => observer.disconnect();
+  }, [displayedReviews]);
+
+  // Ensure initial display if data loads but displayedReviews is empty
+  useEffect(() => {
+    if (reviews.length > 0 && displayedReviews.length === 0) {
+      setDisplayedReviews(getRandomReviews(reviews, 6));
+    }
+  }, [reviews]);
+
+  // Fallback: force reveal if none revealed after 1.5s
+  useEffect(() => {
+    if (displayedReviews.length === 0) return;
+    const t = setTimeout(() => {
+      const cards = document.querySelectorAll('.review-card');
+      const anyRevealed = Array.from(cards).some((card) => card.classList.contains('revealed'));
+      if (!anyRevealed) {
+        cards.forEach((card) => card.classList.add('revealed'));
+      }
+    }, 1500);
+    return () => clearTimeout(t);
+  }, [displayedReviews]);
 
   // Cambiar reseñas cada 12s con transición aún más suave (fade + translate sutil)
   useEffect(() => {
@@ -281,14 +317,15 @@ export function RandomReviews() {
           {displayedReviews.map((review, index) => (
             <div
               key={`${review.id}-${animationKey}-${index}`}
-              className={`relative overflow-hidden hover-lift group transition-all duration-600 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+              className={`relative overflow-hidden hover-lift group transition-all duration-600 ease-[cubic-bezier(0.22,1,0.36,1)] review-card ${
                 isTransitioning
                   ? 'opacity-0 translate-y-3'
                   : 'opacity-100 translate-y-0'
               }`}
               style={{
-                transitionDelay: isTransitioning ? `${index * 50}ms` : `${index * 70}ms`
-              }}
+  ['--delay' as any]: `${index * 50}ms`,
+  willChange: 'opacity, transform'
+}}
             >
               <Card className="relative">
               {/* Decorative quote */}
@@ -450,6 +487,20 @@ export function RandomReviews() {
           -webkit-box-orient: vertical;
           overflow: hidden;
         }
+
+        /* Per-card reveal animations for RandomReviews */
+        .review-card {
+          opacity: 0;
+          transform: translateY(8px);
+          will-change: opacity, transform;
+          transition: opacity 600ms cubic-bezier(0.22,1,0.36,1), transform 600ms cubic-bezier(0.22,1,0.36,1);
+          transition-delay: var(--delay);
+        }
+        .review-card.revealed {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
       `}</style>
     </section>
   );

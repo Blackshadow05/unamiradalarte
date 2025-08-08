@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
-  darkMode: ['class'],
+  content: ['./src/**/*.{js,ts,jsx,tsx,mdx,css}'],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
@@ -69,5 +69,6 @@ module.exports = {
   plugins: [
     require('@tailwindcss/typography'),
     require('@tailwindcss/forms'),
+    require('@tailwindcss/line-clamp'),
   ],
 };
