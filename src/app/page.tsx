@@ -3,18 +3,20 @@
 import { Header } from '@/components/sections/Header';
 import { Hero } from '@/components/sections/Hero';
 import { SimpleFooter } from '@/components/sections/SimpleFooter';
-import { FeaturedWorks } from '@/components/sections/FeaturedWorks';
-import { Services } from '@/components/sections/Services';
+// Removed unused import to avoid TS noUnusedLocals
+import { GalleryFull } from '@/components/sections/GalleryFull';
+import ServicesList from '@/components/sections/ServicesList';
+// import { Services } from '@/components/sections/Services'; // If not used, remove to avoid lint
 import { Contact } from '@/components/sections/Contact';
 import { RandomReviews } from '@/components/sections/RandomReviews';
 
 import { useEffect, useRef } from 'react';
 import { addVisitRow } from '@/lib/supabase-queries';
- 
+  
 export default function HomePage() {
   // Evitar doble inserción por montaje doble en StrictMode (dev)
   const hasLogged = useRef(false);
- 
+
   useEffect(() => {
     let active = true;
     const log = async () => {
@@ -44,12 +46,10 @@ export default function HomePage() {
       <Hero />
 
       {/* Obras destacadas */}
-      <FeaturedWorks />
+      <GalleryFull />
 
-      {/* Sección de Mis Servicios (componente reutilizable) */}
-      <div id="mis-servicios">
-        <Services />
-      </div>
+      {/* Mis Servicios (colocada justo debajo de Obras) */}
+      <ServicesList />
 
       {/* Sobre Mí removido de la home */}
       <RandomReviews />

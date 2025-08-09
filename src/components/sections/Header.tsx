@@ -57,7 +57,7 @@ export function Header() {
     {item.name}
   </Link>
 ))}
-        <Link href="/#contacto">
+        <Link href="/contacto">
               <Button size="sm">Contactar</Button>
             </Link>
           </div>
@@ -93,7 +93,7 @@ export function Header() {
                 </Link>
               ))}
               <div className="pt-2">
-                <Link href="/#contacto">
+                <Link href="#contacto-form">
                   <Button size="sm" className="w-full">
                     Contactar
                   </Button>

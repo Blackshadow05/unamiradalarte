@@ -48,6 +48,7 @@ export interface Artist {
 export interface ContactForm {
   name: string;
   email: string;
+  phone?: string;
   message: string;
   subject: 'consulta' | 'encargo' | 'colaboracion' | 'otro';
 }

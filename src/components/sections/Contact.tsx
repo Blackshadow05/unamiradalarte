@@ -14,7 +14,9 @@ export function Contact() {
                     </p>
                 </div>
 
-                <ContactForm />
+                <div id="contacto-form">
+                  <ContactForm />
+                </div>
             </div>
         </section>
     );

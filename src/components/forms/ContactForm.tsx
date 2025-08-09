@@ -10,7 +10,6 @@ import { Mail, Phone, MapPin, Send } from 'lucide-react';
 const subjects = [
   { value: 'consulta', label: 'Consulta General' },
   { value: 'encargo', label: 'Encargo Personalizado' },
-  { value: 'colaboracion', label: 'Colaboración' },
   { value: 'otro', label: 'Otro' },
 ];
 
@@ -18,10 +17,11 @@ export function ContactForm() {
   const [formData, setFormData] = useState<ContactFormType>({
     name: '',
     email: '',
+    phone: '',
     message: '',
     subject: 'consulta',
   });
-  
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
@@ -38,7 +38,7 @@ export function ContactForm() {
     // Reset form after 3 seconds
     setTimeout(() => {
       setSubmitted(false);
-      setFormData({ name: '', email: '', message: '', subject: 'consulta' });
+      setFormData({ name: '', email: '', phone: '', message: '', subject: 'consulta' });
     }, 3000);
   };
 
@@ -65,7 +65,6 @@ export function ContactForm() {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-      {/* Contact Info */}
       <div className="space-y-8">
         <div>
           <h3 className="text-2xl font-bold mb-6">Información de Contacto</h3>
@@ -124,7 +123,6 @@ export function ContactForm() {
         </div>
       </div>
 
-      {/* Contact Form */}
       <div className="lg:col-span-2">
         <Card>
           <CardHeader>
@@ -133,7 +131,7 @@ export function ContactForm() {
               Cuéntame sobre tu proyecto o consulta. Te responderé en menos de 24 horas.
             </p>
           </CardHeader>
-          
+
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -152,7 +150,7 @@ export function ContactForm() {
                     placeholder="Tu nombre completo"
                   />
                 </div>
-                
+
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
                     Email *
@@ -171,9 +169,20 @@ export function ContactForm() {
               </div>
 
               <div>
-                <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
-                  Asunto *
-                </label>
+                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">Celular</label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
+                  placeholder="Número de celular"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">Asunto *</label>
                 <select
                   id="subject"
                   name="subject"
@@ -191,9 +200,7 @@ export function ContactForm() {
               </div>
 
               <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                  Mensaje *
-                </label>
+                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">Mensaje *</label>
                 <textarea
                   id="message"
                   name="message"

@@ -8,7 +8,7 @@ export function RichFooter() {
   const [email, setEmail] = useState("");
 
   return (
-    <footer className="relative border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 text-gray-700 dark:text-gray-200">
+    <footer className="relative border-t border-gray-200 dark:border-gray-800 bg-gradient-to-r from-fuchsia-50 via-fuchsia-100 to-fuchsia-200 dark:from-fuchsia-900 dark:to-fuchsia-800 text-black dark:text-white" style={{ textShadow: '0 1px 0 rgba(0,0,0,0.25)' }}>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Top: Brand + Newsletter */}

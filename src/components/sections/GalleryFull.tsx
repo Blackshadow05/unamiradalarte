@@ -533,51 +533,6 @@ export function GalleryFull() {
                     </div>
                 )}
 
-                {/* Filtros por categoría y estado */}
-                <div className="mb-8 space-y-4">
-                    {/* Filtros por categoría */}
-                    <div>
-                        <h3 className="text-sm font-medium text-gray-700 mb-3 text-center">Categorías</h3>
-                        <div className="flex flex-wrap gap-2 justify-center">
-                            {categories.map((category) => (
-                                <button
-                                    key={category}
-                                    onClick={() => handleCategoryChange(category)}
-                                    className={cn(
-                                        'px-4 py-2 rounded-full text-sm font-medium transition-colors',
-                                        selectedCategory === category
-                                            ? 'bg-primary-500 text-white'
-                                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                                    )}
-                                >
-                                    {category === 'todas' ? 'Todas' : category.charAt(0).toUpperCase() + category.slice(1)}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-                    
-                    {/* Filtros por estado */}
-                    <div>
-                        <h3 className="text-sm font-medium text-gray-700 mb-3 text-center">Estado</h3>
-                        <div className="flex flex-wrap gap-2 justify-center">
-                            {['todos', 'disponible', 'vendido'].map((estado) => (
-                                <button
-                                    key={estado}
-                                    onClick={() => handleEstadoChange(estado)}
-                                    className={cn(
-                                        'px-4 py-2 rounded-full text-sm font-medium transition-colors',
-                                        selectedEstado === estado
-                                            ? 'bg-primary-500 text-white'
-                                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                                    )}
-                                >
-                                    {estado === 'todos' ? 'Todos' : 
-                                     estado === 'disponible' ? 'Disponible' : 'Vendido'}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-                </div>
 
                 {/* Información de resultados */}
                 <div className="mb-6 text-center">
