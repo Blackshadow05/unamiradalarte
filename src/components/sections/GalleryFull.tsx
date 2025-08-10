@@ -12,6 +12,7 @@ import { Eye, Heart, ChevronLeft, ChevronRight, Loader2, AlertCircle } from 'luc
 import { getGaleriaItems, GaleriaItem } from '@/lib/supabase-queries';
 import { getArtworkRatings, addArtworkRating, getArtworkRatingStats, convertArtworkRatingToReview } from '@/lib/supabase';
 import { Review, ReviewForm, ArtworkRating } from '@/types';
+import { GalleryFilters } from './GalleryFilters';
 
 // Función para convertir ArtworkRating a Review
 function convertRatingToReview(rating: ArtworkRating): Review {
@@ -55,7 +56,7 @@ function convertGaleriaToArtwork(galeriaItem: GaleriaItem & { averageRating?: nu
     creationTime: galeriaItem.Tiempo_creacion || '',
     rating: galeriaItem.averageRating || 0, // Usar rating real o 0 si no hay reseñas
     reviewCount: galeriaItem.totalReviews || 0, // Usar conteo real o 0 si no hay reseñas
-    status: (galeriaItem.Estado?.toLowerCase() as 'disponible' | 'vendida' | 'reservada') || 'disponible',
+    status: (((galeriaItem.Estado?.toLowerCase() ?? 'disponible') === 'vendido' || (galeriaItem.Estado?.toLowerCase() ?? 'disponible') === 'vendida') ? 'vendida' : 'disponible') as 'disponible' | 'vendida',
   };
 }
 
@@ -419,7 +420,7 @@ export function GalleryFull() {
         const matchesCategory = selectedCategory === 'todas' || artwork.category === selectedCategory;
         const matchesEstado = selectedEstado === 'todos' || 
             (selectedEstado === 'disponible' && artwork.status === 'disponible') ||
-            (selectedEstado === 'vendido' && artwork.status === 'vendida');
+            (selectedEstado === 'vendida' && artwork.status === 'vendida');
         return matchesCategory && matchesEstado;
     });
 
@@ -556,6 +557,13 @@ export function GalleryFull() {
                     )}
                 </div>
 
+<GalleryFilters
+  categories={categories}
+  currentCategory={selectedCategory}
+  onCategoryChange={handleCategoryChange}
+  currentEstado={selectedEstado}
+  onEstadoChange={handleEstadoChange}
+/>
                 {/* Grid de obras */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8 mb-12">
                     {currentArtworks.map((artwork) => (
@@ -667,16 +675,15 @@ export function GalleryFull() {
                                     )}
                                 </div>
 
-                                <Button
-                                    className={cn(
-                                        "w-full",
-                                        artwork.status === 'vendida' && "bg-gray-400 hover:bg-gray-400 cursor-not-allowed"
-                                    )}
-                                    onClick={() => handleViewArtwork(artwork)}
-                                    disabled={artwork.status === 'vendida'}
-                                >
-                                    {artwork.status === 'vendida' ? '🔒 Obra Vendida' : '👁️ Ver Detalles'}
-                                </Button>
+                              <Button
+                                className={cn(
+                                  "w-full",
+                                  artwork.status === 'vendida' ? "bg-gray-400 hover:bg-gray-400" : ""
+                                )}
+                                onClick={() => handleViewArtwork(artwork)}
+                              >
+                                {artwork.status === 'vendida' ? '🔒 Obra Vendida' : '👁️ Ver Detalles'}
+                              </Button>
                             </div>
                         </Card>
                     ))}

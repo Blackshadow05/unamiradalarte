@@ -1,6 +1,6 @@
 import { Header } from '@/components/sections/Header';
 import { SimpleFooter } from '@/components/sections/SimpleFooter';
-import { Services } from '@/components/sections/Services';
+import ServicesList from '@/components/sections/ServicesList';
 import { PageHero } from '@/components/sections/PageHero';
 
 export const metadata = {
@@ -17,7 +17,7 @@ export default function ServiciosPage() {
         subtitle="Ofrezco una variedad de servicios artísticos personalizados para inmortalizar a tus mascotas y crear obras únicas que capturen su esencia."
         badge="Arte a tu Medida"
       />
-      <Services />
+      <ServicesList />
       <SimpleFooter />
     </main>
   );

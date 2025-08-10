@@ -1,6 +1,8 @@
+"use client";
 import React, { useState } from 'react';
 import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/Card';
 import { ContactForm } from '@/components/forms/ContactForm';
+import Link from 'next/link';
 
 type Service = {
   title: string;
@@ -71,13 +73,9 @@ const ServicesList: React.FC = () => {
                 <p className="text-xs text-gray-500 mt-2">Tamaño: {service.size}</p>
               </CardContent>
               <CardFooter>
-                <button
-                  aria-label={`Solicitar ${service.title}`}
-                  onClick={() => window.location.href = '#contacto'}
-                  className="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700"
-                >
+                <Link href="/#contacto" aria-label={`Solicitar ${service.title}`} className="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700">
                   Contactar
-                </button>
+                </Link>
               </CardFooter>
             </Card>
           ))}

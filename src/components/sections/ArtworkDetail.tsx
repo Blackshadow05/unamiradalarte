@@ -160,7 +160,7 @@ export function ArtworkDetail({
           </div>
 
           {/* Tab Content */}
-          <div className="flex-1 overflow-y-auto max-h-64">
+          <div className="flex-1 overflow-y-auto max-h-[120vh]">
             {activeTab === 'details' && (
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
