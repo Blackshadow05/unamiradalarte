@@ -355,7 +355,7 @@ const fallbackArtworks: Artwork[] = [
 
 const ITEMS_PER_PAGE = 15;
 
-export function GalleryFull() {
+export function GalleryFull({ showFilters = true, featuredOnly = false }: { showFilters?: boolean; featuredOnly?: boolean }) {
     const [currentPage, setCurrentPage] = useState(1);
     const [favorites, setFavorites] = useState<Set<string>>(new Set());
     const [selectedArtwork, setSelectedArtwork] = useState<Artwork | null>(null);
@@ -415,10 +415,13 @@ export function GalleryFull() {
         }
     };
 
-    // Filtrar obras por categoría y estado
+    // Filtrar obras por categoría, estado y opcionalmente solo destacadas
     const filteredArtworks = allArtworks.filter(artwork => {
+        // Si se solicitó solo obras destacadas, ignorar las que no lo sean
+        if (featuredOnly && !artwork.featured) return false;
+
         const matchesCategory = selectedCategory === 'todas' || artwork.category === selectedCategory;
-        const matchesEstado = selectedEstado === 'todos' || 
+        const matchesEstado = selectedEstado === 'todos' ||
             (selectedEstado === 'disponible' && artwork.status === 'disponible') ||
             (selectedEstado === 'vendida' && artwork.status === 'vendida');
         return matchesCategory && matchesEstado;
@@ -557,30 +560,33 @@ export function GalleryFull() {
                     )}
                 </div>
 
-<GalleryFilters
-  categories={categories}
-  currentCategory={selectedCategory}
-  onCategoryChange={handleCategoryChange}
-  currentEstado={selectedEstado}
-  onEstadoChange={handleEstadoChange}
-/>
+{showFilters && (
+  <GalleryFilters
+    categories={categories}
+    currentCategory={selectedCategory}
+    onCategoryChange={handleCategoryChange}
+    currentEstado={selectedEstado}
+    onEstadoChange={handleEstadoChange}
+  />
+)}
                 {/* Grid de obras */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8 mb-12">
                     {currentArtworks.map((artwork) => (
                         <Card key={artwork.id} className="group">
                             {/* Imagen más ancha en móvil */}
                             <div className="relative overflow-hidden -mx-4 sm:mx-0">
-                                <Image
-                                    src={artwork.image}
-                                    alt={artwork.title}
-                                    width={1200}
-                                    height={900}
-                                    className="w-[100vw] sm:w-full h-[56vh] sm:h-80 object-cover transition-transform duration-500 group-hover:scale-110"
-                                    loading="lazy"
-                                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                                    placeholder="blur"
-                                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
-                                />
+                                <div className="w-full aspect-[4/3] relative">
+                                    <Image
+                                        src={artwork.image}
+                                        alt={artwork.title}
+                                        fill
+                                        style={{ objectFit: 'cover' }}
+                                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                                        quality={75}
+                                        placeholder="blur"
+                                        blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
+                                    />
+                                </div>
 
                                 {/* Overlay with actions */}
                                 <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">

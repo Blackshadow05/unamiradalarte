@@ -33,8 +33,8 @@ export default function ObrasPage() {
     Nombre_obra: '',
     Descripcion: '',
     Categoria: '',
+    Imagen: '',
     Imagen_horizontal: '',
-    Imagen_vertitical: '',
     Año: '',
     Dimensiones: '',
     Tecnica: '',
@@ -45,10 +45,8 @@ export default function ObrasPage() {
     Precio: ''
   });
   const [submitting, setSubmitting] = useState(false);
-  const [uploadingHorizontal, setUploadingHorizontal] = useState(false);
-  const [uploadingVertical, setUploadingVertical] = useState(false);
-  const [previewHorizontal, setPreviewHorizontal] = useState<string>('');
-  const [previewVertical, setPreviewVertical] = useState<string>('');
+  const [uploading, setUploading] = useState(false);
+  const [preview, setPreview] = useState<string>('');
 
   // Cargar obras desde Supabase
   useEffect(() => {
@@ -83,10 +81,17 @@ export default function ObrasPage() {
     try {
       const artwork = artworks.find(a => a.id === id);
       
-      // Eliminar imagen de Supabase Storage si existe
-      if (artwork?.image) {
+      // Eliminar imagen de Supabase Storage si existe (soporte para los distintos campos posibles)
+      const imagePath = (artwork as any)?.image
+        || (artwork as any)?.Imagen
+        || (artwork as any)?.Imagen_horizontal
+        || (artwork as any)?.Imagen_vertitical
+        || (artwork as any)?.image_gallery
+        || null;
+
+      if (imagePath) {
         try {
-          await deleteImage(artwork.image);
+          await deleteImage(imagePath);
         } catch (error) {
           console.warn('No se pudo eliminar la imagen:', error);
         }
@@ -100,49 +105,85 @@ export default function ObrasPage() {
     }
   };
 
-  // Subir imagen horizontal
-  const handleFileHorizontal = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Subir una sola imagen y redimensionar con canvas a max 2048x1536 (calidad 75%)
+  const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     // preview
     const reader = new FileReader();
-    reader.onload = (ev) => setPreviewHorizontal(ev.target?.result as string);
+    reader.onload = (ev) => setPreview(ev.target?.result as string);
     reader.readAsDataURL(file);
 
     try {
-      setUploadingHorizontal(true);
-      const url = await uploadSingleImage(file);
-      setFormData(prev => ({ ...prev, Imagen_horizontal: url }));
-      setPreviewHorizontal('');
+      setUploading(true);
+
+      // Crear elemento Image a partir del archivo
+      const img = await new Promise<HTMLImageElement>((resolve, reject) => {
+        const image = new Image();
+        image.onload = () => resolve(image);
+        image.onerror = () => reject(new Error('Error cargando la imagen'));
+        image.src = URL.createObjectURL(file);
+      });
+
+      const maxWidth = 1600;
+      const maxHeight = 1200;
+      let { width, height } = img;
+      // No upscaling: scale <= 1
+      const scale = Math.min(1, maxWidth / width, maxHeight / height);
+      const targetWidth = Math.round(width * scale);
+      const targetHeight = Math.round(height * scale);
+    
+      const canvas = document.createElement('canvas');
+      canvas.width = targetWidth;
+      canvas.height = targetHeight;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) throw new Error('No se pudo obtener el contexto de canvas');
+
+      // Mejor calidad de remuestreo
+      ctx.imageSmoothingEnabled = true;
+      // 'high' suele ofrecer mejor resultado visual al reducir imágenes grandes
+      (ctx as any).imageSmoothingQuality = 'high';
+
+      // Si createImageBitmap está disponible, úsalo para un remuestreo de mayor calidad
+      // (algunos navegadores permiten pasar opciones de resize)
+      if ((window as any).createImageBitmap) {
+        try {
+          // createImageBitmap puede aceptar un HTMLImageElement y opciones en navegadores modernos
+          const bitmap = await (createImageBitmap as any)(img, { resizeWidth: targetWidth, resizeHeight: targetHeight, resizeQuality: 'high' });
+          if (bitmap) {
+            ctx.drawImage(bitmap, 0, 0, targetWidth, targetHeight);
+            if (typeof bitmap.close === 'function') bitmap.close();
+          } else {
+            ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
+          }
+        } catch (err) {
+          // Si createImageBitmap falla por alguna razón, caer al drawImage normal
+          ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
+        }
+      } else {
+        ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
+      }
+    
+      // Intentar exportar como WebP (calidad 75%). Si el navegador no soporta WebP,
+      // fallback a JPEG automáticamente no es trivial con toBlob, pero la mayoría
+      // de navegadores modernos soportan 'image/webp'.
+      const blob: Blob | null = await new Promise(resolve =>
+        canvas.toBlob(resolve, 'image/webp', 0.75)
+      );
+      if (!blob) throw new Error('Error al procesar la imagen');
+    
+      const outFile = new File([blob], (file.name.replace(/\.\w+$/, '') || 'image') + '.webp', { type: 'image/webp' });
+    
+      const url = await uploadSingleImage(outFile);
+      // Guardar URL tanto en Imagen (para preview/uso local) como en Imagen_horizontal (campo DB requerido)
+      setFormData(prev => ({ ...prev, Imagen: url, Imagen_horizontal: url }));
+      setPreview('');
     } catch (error) {
-      console.error('Error al subir imagen horizontal:', error);
-      alert(`Error al subir imagen horizontal`);
+      console.error('Error al subir imagen:', error);
+      alert('Error al subir imagen');
     } finally {
-      setUploadingHorizontal(false);
-    }
-  };
-
-  // Subir imagen vertical
-  const handleFileVertical = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    // preview
-    const reader = new FileReader();
-    reader.onload = (ev) => setPreviewVertical(ev.target?.result as string);
-    reader.readAsDataURL(file);
-
-    try {
-      setUploadingVertical(true);
-      const url = await uploadSingleImage(file);
-      setFormData(prev => ({ ...prev, Imagen_vertitical: url })); // nombre exacto
-      setPreviewVertical('');
-    } catch (error) {
-      console.error('Error al subir imagen vertical:', error);
-      alert(`Error al subir imagen vertical`);
-    } finally {
-      setUploadingVertical(false);
+      setUploading(false);
     }
   };
 
@@ -158,9 +199,9 @@ export default function ObrasPage() {
       if (formData.Descripcion) dataToSubmit.Descripcion = formData.Descripcion;
       if (formData.Categoria) dataToSubmit.Categoria = formData.Categoria;
 
-      // Nuevos campos de imágenes
-      if (formData.Imagen_horizontal) dataToSubmit['Imagen_horizontal'] = formData.Imagen_horizontal;
-      if (formData.Imagen_vertitical) dataToSubmit['Imagen_vertitical'] = formData.Imagen_vertitical;
+      // Guardar la URL en el campo imagen_horizontal de la tabla (compatibilidad: preferir Imagen si existe)
+      if (formData.Imagen) dataToSubmit['Imagen_horizontal'] = formData.Imagen;
+      else if (formData.Imagen_horizontal) dataToSubmit['Imagen_horizontal'] = formData.Imagen_horizontal;
 
       if (formData.Año) dataToSubmit.Año = parseInt(formData.Año);
       if (formData.Dimensiones) dataToSubmit.Dimensiones = formData.Dimensiones;
@@ -216,8 +257,8 @@ export default function ObrasPage() {
         Nombre_obra: '',
         Descripcion: '',
         Categoria: '',
+        Imagen: '',
         Imagen_horizontal: '',
-        Imagen_vertitical: '',
         Año: '',
         Dimensiones: '',
         Tecnica: '',
@@ -245,8 +286,8 @@ export default function ObrasPage() {
       Nombre_obra: artwork.Nombre_obra || '',
       Descripcion: artwork.Descripcion || '',
       Categoria: artwork.Categoria || '',
-      Imagen_horizontal: (artwork as any).Imagen_horizontal || artwork.image_gallery || artwork.image || '',
-      Imagen_vertitical: (artwork as any).Imagen_vertitical || '',
+      Imagen: (artwork as any).Imagen || (artwork as any).Imagen_horizontal || (artwork as any).Imagen_vertitical || artwork.image_gallery || artwork.image || '',
+      Imagen_horizontal: (artwork as any).Imagen_horizontal || (artwork as any).Imagen || (artwork as any).Imagen_vertitical || artwork.image_gallery || artwork.image || '',
       Año: artwork.Año?.toString() || '',
       Dimensiones: artwork.Dimensiones || '',
       Tecnica: artwork.Tecnica || '',
@@ -262,14 +303,13 @@ export default function ObrasPage() {
   const handleCloseModal = () => {
     setShowAddModal(false);
     setEditingArtwork(null);
-    setPreviewHorizontal('');
-    setPreviewVertical('');
+    setPreview('');
     setFormData({
       Nombre_obra: '',
       Descripcion: '',
       Categoria: '',
+      Imagen: '',
       Imagen_horizontal: '',
-      Imagen_vertitical: '',
       Año: '',
       Dimensiones: '',
       Tecnica: '',
@@ -426,9 +466,9 @@ export default function ObrasPage() {
             >
               {/* Image */}
               <div className="aspect-video bg-gradient-to-r from-primary-500 to-accent-500 relative">
-                {((artwork as any).Imagen_horizontal || (artwork as any).Imagen_vertitical || artwork.image_gallery || artwork.image) && (
+                {((artwork as any).Imagen || (artwork as any).Imagen_horizontal || (artwork as any).Imagen_vertitical || artwork.image_gallery || artwork.image) && (
                   <img
-                    src={(artwork as any).Imagen_horizontal || (artwork as any).Imagen_vertitical || artwork.image_gallery || artwork.image || ''}
+                    src={(artwork as any).Imagen || (artwork as any).Imagen_horizontal || (artwork as any).Imagen_vertitical || artwork.image_gallery || artwork.image || ''}
                     alt={artwork.Nombre_obra || 'Obra de arte'}
                     className="w-full h-full object-cover"
                     loading="lazy"
@@ -651,96 +691,45 @@ export default function ObrasPage() {
                   Imágenes de la obra
                 </label>
 
-                {/* Preview/actual Horizontal */}
-                {(formData.Imagen_horizontal || previewHorizontal) && (
+                {(formData.Imagen || preview) && (
                   <div className="mb-4">
                     <img
-                      src={previewHorizontal || formData.Imagen_horizontal}
-                      alt="Imagen horizontal"
-                      className={`w-full h-48 object-cover rounded-lg border ${previewHorizontal ? 'opacity-50' : ''}`}
+                      src={preview || formData.Imagen}
+                      alt="Imagen"
+                      className={`w-full h-48 object-cover rounded-lg border ${preview ? 'opacity-50' : ''}`}
                     />
                     <p className="text-xs text-gray-500 mt-2">
-                      {previewHorizontal ? 'Subiendo imagen horizontal...' : 'Imagen horizontal cargada'}
+                      {preview ? 'Subiendo imagen...' : 'Imagen cargada'}
                     </p>
                   </div>
                 )}
 
-                {/* Input Horizontal */}
                 <div className="mb-4">
-                  <label className="block text-xs font-medium text-gray-600 mb-1">Imagen Horizontal</label>
+                  <label className="block text-xs font-medium text-gray-600 mb-1">Imagen</label>
                   <input
                     type="file"
                     accept="image/*"
-                    onChange={handleFileHorizontal}
-                    disabled={uploadingHorizontal}
+                    onChange={handleFile}
+                    disabled={uploading}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent disabled:opacity-50"
                   />
-                  {uploadingHorizontal && (
+                  {uploading && (
                     <div className="flex items-center mt-2 text-sm text-gray-600">
                       <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                      Subiendo imagen horizontal...
+                      Subiendo imagen...
                     </div>
                   )}
                 </div>
 
-                {/* Preview/actual Vertical */}
-                {(formData.Imagen_vertitical || previewVertical) && (
-                  <div className="mb-4">
-                    <img
-                      src={previewVertical || formData.Imagen_vertitical}
-                      alt="Imagen vertical"
-                      className={`w-full h-48 object-cover rounded-lg border ${previewVertical ? 'opacity-50' : ''}`}
-                    />
-                    <p className="text-xs text-gray-500 mt-2">
-                      {previewVertical ? 'Subiendo imagen vertical...' : 'Imagen vertical cargada'}
-                    </p>
-                  </div>
-                )}
-
-                {/* Input Vertical */}
-                <div className="mb-2">
-                  <label className="block text-xs font-medium text-gray-600 mb-1">Imagen Vertical</label>
+                <div className="border-t pt-3">
+                  <label className="block text-xs text-gray-500 mb-2">O URL Imagen</label>
                   <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileVertical}
-                    disabled={uploadingVertical}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent disabled:opacity-50"
+                    type="url"
+                    value={formData.Imagen}
+                    onChange={(e) => setFormData({...formData, Imagen: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
+                    placeholder="https://.../imagen.jpg"
                   />
-                  {uploadingVertical && (
-                    <div className="flex items-center mt-2 text-sm text-gray-600">
-                      <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                      Subiendo imagen vertical...
-                    </div>
-                  )}
-                </div>
-
-                {/* Opción alternativa: URLs manuales */}
-                <div className="border-t pt-3 grid grid-cols-1 md:grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs text-gray-500 mb-2">
-                      O URL Imagen Horizontal
-                    </label>
-                    <input
-                      type="url"
-                      value={formData.Imagen_horizontal}
-                      onChange={(e) => setFormData({...formData, Imagen_horizontal: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
-                      placeholder="https://.../horizontal.jpg"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs text-gray-500 mb-2">
-                      O URL Imagen Vertical
-                    </label>
-                    <input
-                      type="url"
-                      value={formData.Imagen_vertitical}
-                      onChange={(e) => setFormData({...formData, Imagen_vertitical: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
-                      placeholder="https://.../vertical.jpg"
-                    />
-                  </div>
                 </div>
               </div>
 

@@ -46,7 +46,7 @@ export default function HomePage() {
       <Hero />
 
       {/* Obras destacadas */}
-      <GalleryFull />
+      <GalleryFull showFilters={false} featuredOnly={true} />
 
       {/* Mis Servicios (colocada justo debajo de Obras) */}
       <ServicesList />
