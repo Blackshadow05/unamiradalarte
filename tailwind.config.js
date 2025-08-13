@@ -15,7 +15,10 @@ module.exports = {
           600: '#0077cc',  // Hover / énfasis
           700: '#005c99',
           800: '#003d66',
-          900: '#001f33'
+          900: '#001f33',
+          magenta: '#D4007E',       // Fucsia principal
+          'magenta-dark': '#B10063', // Fucsia oscuro para hover
+          'magenta-light': '#FF4DAD' // Fucsia claro para variante secundaria
         },
         primary: {
           50: '#fdf4ff',

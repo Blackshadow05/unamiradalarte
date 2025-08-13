@@ -53,7 +53,7 @@ export function Hero() {
     </Button>
   </Link>
   <Link href="/galeria">
-    <Button variant="outline" size="lg" className="px-8 py-4">
+    <Button size="lg" className="px-8 py-4">
       Ver galería
     </Button>
   </Link>
