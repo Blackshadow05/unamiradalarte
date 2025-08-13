@@ -56,302 +56,10 @@ function convertGaleriaToArtwork(galeriaItem: GaleriaItem & { averageRating?: nu
     creationTime: galeriaItem.Tiempo_creacion || '',
     rating: galeriaItem.averageRating || 0, // Usar rating real o 0 si no hay reseñas
     reviewCount: galeriaItem.totalReviews || 0, // Usar conteo real o 0 si no hay reseñas
-    status: (((galeriaItem.Estado?.toLowerCase() ?? 'disponible') === 'vendido' || (galeriaItem.Estado?.toLowerCase() ?? 'disponible') === 'vendida') ? 'vendida' : 'disponible') as 'disponible' | 'vendida',
+    status: (((galeriaItem.Estado?.toLowerCase() ?? 'disponible') === 'vendido' || (galeriaItem.Estado?.toLowerCase() ?? 'disponible') === 'vendida') ? 'vendida' : (galeriaItem.Estado?.toLowerCase() === 'de cliente' ? 'de cliente' : 'disponible')) as 'disponible' | 'vendida' | 'de cliente',
   };
 }
 
-// Datos de ejemplo para fallback (se reemplazarán con datos reales)
-const fallbackArtworks: Artwork[] = [
-    {
-        id: '1',
-        title: 'Bella - Golden Retriever',
-        description: 'Retrato emotivo de Bella, una Golden Retriever con una sonrisa contagiosa que ilumina cualquier habitación.',
-        price: 45000,
-        image: '/api/placeholder/400/500',
-        category: 'retratos',
-        featured: true,
-        dimensions: '40x50 cm',
-        year: 2024,
-        technique: 'Óleo sobre lienzo',
-        materials: ['Óleo', 'Lienzo', 'Pinceles de detalle'],
-        inspiration: 'Bella tiene una personalidad tan luminosa que quise capturar esa alegría pura que transmite a todos los que la conocen.',
-        creationTime: '2 semanas',
-        rating: 4.9,
-        reviewCount: 24,
-        status: 'disponible',
-    },
-    {
-        id: '2',
-        title: 'Orquídeas de Costa Rica',
-        description: 'Exquisito bodegón con orquídeas nativas costarricenses, celebrando la diversidad floral de nuestro país.',
-        price: 38000,
-        image: '/api/placeholder/400/500',
-        category: 'naturaleza',
-        featured: true,
-        dimensions: '45x60 cm',
-        year: 2024,
-        technique: 'Acrílico sobre lienzo',
-        materials: ['Acrílico', 'Lienzo', 'Pinceles finos'],
-        inspiration: 'Costa Rica alberga más de 1,400 especies de orquídeas. Quise rendir homenaje a esta increíble biodiversidad.',
-        creationTime: '3 semanas',
-        rating: 4.8,
-        reviewCount: 16,
-        status: 'disponible',
-    },
-    {
-        id: '3',
-        title: 'Colibríes Amigurumi',
-        description: 'Pareja de colibríes tejidos a mano, representando la gracia y belleza de estas aves tan especiales para Costa Rica.',
-        price: 22000,
-        image: '/api/placeholder/400/500',
-        category: 'artesanias',
-        featured: true,
-        dimensions: '20x15 cm c/u',
-        year: 2024,
-        technique: 'Crochet',
-        materials: ['Hilo de algodón multicolor', 'Relleno', 'Alambre para estructura'],
-        inspiration: 'Los colibríes simbolizan la libertad y la alegría. Quise crear una versión tierna que capture su esencia mágica.',
-        creationTime: '1 semana',
-        rating: 4.9,
-        reviewCount: 19,
-        status: 'disponible',
-    },
-    {
-        id: '4',
-        title: 'Max - Pastor Alemán',
-        description: 'Retrato majestuoso de Max, capturando la nobleza y lealtad característica de los pastores alemanes.',
-        price: 42000,
-        image: '/api/placeholder/400/500',
-        category: 'retratos',
-        featured: false,
-        dimensions: '35x45 cm',
-        year: 2024,
-        technique: 'Óleo sobre lienzo',
-        materials: ['Óleo', 'Lienzo'],
-        inspiration: 'Max es un perro con una presencia imponente pero un corazón gentil.',
-        creationTime: '2 semanas',
-        rating: 4.7,
-        reviewCount: 12,
-        status: 'disponible',
-    },
-    {
-        id: '5',
-        title: 'Paisaje Volcánico',
-        description: 'Vista panorámica del Volcán Arenal al amanecer, con sus colores cálidos y majestuosa presencia.',
-        price: 55000,
-        image: '/api/placeholder/400/500',
-        category: 'paisajes',
-        featured: false,
-        dimensions: '60x80 cm',
-        year: 2023,
-        technique: 'Acrílico sobre lienzo',
-        materials: ['Acrílico', 'Lienzo grande'],
-        inspiration: 'El Arenal representa la fuerza y belleza natural de Costa Rica.',
-        creationTime: '4 semanas',
-        rating: 4.8,
-        reviewCount: 8,
-        status: 'disponible',
-    },
-    {
-        id: '6',
-        title: 'Luna - Gata Persa',
-        description: 'Retrato delicado de Luna, una gata persa con ojos azules hipnotizantes.',
-        price: 40000,
-        image: '/api/placeholder/400/500',
-        category: 'retratos',
-        featured: false,
-        dimensions: '30x40 cm',
-        year: 2024,
-        technique: 'Óleo sobre lienzo',
-        materials: ['Óleo', 'Lienzo'],
-        inspiration: 'Los ojos de Luna tienen una profundidad que parece contener secretos del universo.',
-        creationTime: '10 días',
-        rating: 4.6,
-        reviewCount: 15,
-        status: 'disponible',
-    },
-    {
-        id: '7',
-        title: 'Mariposas Tropicales',
-        description: 'Colección de mariposas nativas de Costa Rica en un vibrante jardín tropical.',
-        price: 35000,
-        image: '/api/placeholder/400/500',
-        category: 'naturaleza',
-        featured: false,
-        dimensions: '50x40 cm',
-        year: 2024,
-        technique: 'Acuarela',
-        materials: ['Acuarela', 'Papel especial'],
-        inspiration: 'La diversidad de mariposas en Costa Rica es asombrosa, cada una una joya voladora.',
-        creationTime: '2 semanas',
-        rating: 4.5,
-        reviewCount: 11,
-        status: 'disponible',
-    },
-    {
-        id: '8',
-        title: 'Cactus en Maceta',
-        description: 'Bodegón minimalista con cactus y suculentas en macetas de cerámica artesanal.',
-        price: 28000,
-        image: '/api/placeholder/400/500',
-        category: 'naturaleza',
-        featured: false,
-        dimensions: '25x35 cm',
-        year: 2024,
-        technique: 'Acrílico',
-        materials: ['Acrílico', 'Lienzo pequeño'],
-        inspiration: 'La belleza está en la simplicidad y resistencia de estas plantas.',
-        creationTime: '1 semana',
-        rating: 4.4,
-        reviewCount: 9,
-        status: 'disponible',
-    },
-    {
-        id: '9',
-        title: 'Tucán Amigurumi',
-        description: 'Tucán tejido a mano con colores vibrantes, representando el ave nacional de Costa Rica.',
-        price: 25000,
-        image: '/api/placeholder/400/500',
-        category: 'artesanias',
-        featured: false,
-        dimensions: '25x20 cm',
-        year: 2024,
-        technique: 'Crochet',
-        materials: ['Hilo multicolor', 'Relleno'],
-        inspiration: 'El tucán es símbolo de la riqueza natural costarricense.',
-        creationTime: '5 días',
-        rating: 4.7,
-        reviewCount: 13,
-        status: 'disponible',
-    },
-    {
-        id: '10',
-        title: 'Atardecer en Manuel Antonio',
-        description: 'Paisaje costero capturando la magia del atardecer en una de las playas más hermosas de Costa Rica.',
-        price: 48000,
-        image: '/api/placeholder/400/500',
-        category: 'paisajes',
-        featured: false,
-        dimensions: '50x70 cm',
-        year: 2023,
-        technique: 'Óleo sobre lienzo',
-        materials: ['Óleo', 'Lienzo'],
-        inspiration: 'Los atardeceres en Manuel Antonio son únicos, llenos de colores cálidos.',
-        creationTime: '3 semanas',
-        rating: 4.9,
-        reviewCount: 7,
-        status: 'disponible',
-    },
-    // Agregar más obras para completar el ejemplo
-    {
-        id: '11',
-        title: 'Rocky - Bulldog Francés',
-        description: 'Retrato juguetón de Rocky, capturando su personalidad traviesa y encantadora.',
-        price: 43000,
-        image: '/api/placeholder/400/500',
-        category: 'retratos',
-        featured: false,
-        dimensions: '35x45 cm',
-        year: 2024,
-        technique: 'Óleo sobre lienzo',
-        materials: ['Óleo', 'Lienzo'],
-        inspiration: 'Rocky tiene una expresión que siempre me hace sonreír.',
-        creationTime: '2 semanas',
-        rating: 4.6,
-        reviewCount: 10,
-        status: 'disponible',
-    },
-    {
-        id: '12',
-        title: 'Jardín de Rosas',
-        description: 'Hermoso jardín de rosas en plena floración, con una paleta de colores suaves y románticos.',
-        price: 36000,
-        image: '/api/placeholder/400/500',
-        category: 'naturaleza',
-        featured: false,
-        dimensions: '40x50 cm',
-        year: 2024,
-        technique: 'Acuarela',
-        materials: ['Acuarela', 'Papel'],
-        inspiration: 'Las rosas representan el amor y la belleza en su forma más pura.',
-        creationTime: '2 semanas',
-        rating: 4.5,
-        reviewCount: 14,
-        status: 'disponible',
-    },
-    {
-        id: '13',
-        title: 'Perezoso Amigurumi',
-        description: 'Adorable perezoso tejido a mano, representando la tranquilidad de la vida costarricense.',
-        price: 20000,
-        image: '/api/placeholder/400/500',
-        category: 'artesanias',
-        featured: false,
-        dimensions: '18x15 cm',
-        year: 2024,
-        technique: 'Crochet',
-        materials: ['Hilo café', 'Relleno'],
-        inspiration: 'Los perezosos nos enseñan la importancia de tomarse las cosas con calma.',
-        creationTime: '4 días',
-        rating: 4.8,
-        reviewCount: 16,
-        status: 'disponible',
-    },
-    {
-        id: '14',
-        title: 'Montañas de Cartago',
-        description: 'Vista panorámica de las montañas de Cartago envueltas en niebla matutina.',
-        price: 52000,
-        image: '/api/placeholder/400/500',
-        category: 'paisajes',
-        featured: false,
-        dimensions: '55x75 cm',
-        year: 2023,
-        technique: 'Óleo sobre lienzo',
-        materials: ['Óleo', 'Lienzo grande'],
-        inspiration: 'La niebla matutina crea un ambiente místico en las montañas.',
-        creationTime: '4 semanas',
-        rating: 4.7,
-        reviewCount: 6,
-        status: 'disponible',
-    },
-    {
-        id: '15',
-        title: 'Simba - Gato Naranja',
-        description: 'Retrato cálido de Simba, un gato naranja con una personalidad solar.',
-        price: 39000,
-        image: '/api/placeholder/400/500',
-        category: 'retratos',
-        featured: false,
-        dimensions: '30x40 cm',
-        year: 2024,
-        technique: 'Óleo sobre lienzo',
-        materials: ['Óleo', 'Lienzo'],
-        inspiration: 'Simba irradia calidez como un pequeño sol felino.',
-        creationTime: '10 días',
-        rating: 4.6,
-        reviewCount: 12,
-        status: 'disponible',
-    },
-    {
-        id: '16',
-        title: 'Bromelias del Bosque',
-        description: 'Estudio detallado de bromelias en su hábitat natural del bosque nuboso.',
-        price: 33000,
-        image: '/api/placeholder/400/500',
-        category: 'naturaleza',
-        featured: false,
-        dimensions: '35x45 cm',
-        year: 2024,
-        technique: 'Acuarela',
-        materials: ['Acuarela', 'Papel'],
-        inspiration: 'Las bromelias son joyas escondidas en nuestros bosques.',
-        creationTime: '2 semanas',
-        rating: 4.4,
-        reviewCount: 8,
-        status: 'disponible',
-    },
-];
 
 const ITEMS_PER_PAGE = 15;
 
@@ -495,6 +203,7 @@ export function GalleryFull({ showFilters = true, featuredOnly = false }: { show
     const handleEstadoChange = (estado: string) => {
         setSelectedEstado(estado);
         setCurrentPage(1); // Reset to first page when changing estado
+        console.log('Estado cambiado a:', estado); // Debugging log
     };
 
     const handlePageChange = (page: number) => {
@@ -572,7 +281,7 @@ export function GalleryFull({ showFilters = true, featuredOnly = false }: { show
             {/* Grid de obras */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8 mb-12">
                 {currentArtworks.map((artwork) => (
-                    <div key={artwork.id} className="group relative p-[1px] rounded-xl bg-gradient-to-br from-primary-400/40 via-fuchsia-400/30 to-amber-400/40 transition-transform duration-300 hover:-translate-y-0.5">
+                    <div key={artwork.id} className="group relative p-[1px] rounded-xl transition-transform duration-300 hover:-translate-y-0.5">
                       <Card className="relative rounded-xl overflow-hidden bg-white shadow-md transition-shadow duration-300 group-hover:shadow-xl">
                          {/* Imagen más ancha en móvil */}
                         <div className="relative overflow-hidden -mx-4 sm:mx-0">
@@ -595,7 +304,7 @@ export function GalleryFull({ showFilters = true, featuredOnly = false }: { show
                                 <div className="flex space-x-4">
                                     <button
                                         onClick={() => handleViewArtwork(artwork)}
-                                        className="p-3 bg-white/20 backdrop-blur-sm rounded-full text-white hover:bg-white/30 transition-colors"
+                                        className="p-3 bg-white/90 rounded-full text-gray-900 hover:bg-white transition-colors"
                                     >
                                         <Eye className="h-5 w-5" />
                                     </button>
@@ -605,10 +314,10 @@ export function GalleryFull({ showFilters = true, featuredOnly = false }: { show
                                             toggleFavorite(artwork.id);
                                         }}
                                         className={cn(
-                                            'p-3 backdrop-blur-sm rounded-full transition-colors',
+                                            'p-3 rounded-full transition-colors',
                                             favorites.has(artwork.id)
                                                 ? 'bg-red-500 text-white'
-                                                : 'bg-white/20 text-white hover:bg-white/30'
+                                                : 'bg-white/90 text-gray-900 hover:bg-white'
                                         )}
                                     >
                                         <Heart className={cn('h-5 w-5', favorites.has(artwork.id) && 'fill-current')} />
@@ -619,18 +328,23 @@ export function GalleryFull({ showFilters = true, featuredOnly = false }: { show
                             {/* Badges */}
                             <div className="absolute top-4 left-4 flex flex-col gap-2">
                                 {artwork.featured && (
-                                    <div className="bg-primary-500/95 text-white px-3 py-1 rounded-full text-sm font-medium shadow-sm">
+                                    <div className="bg-primary-500/95 text-white px-2 py-0.5 rounded-full text-xs font-medium shadow-sm">
                                         Destacada
                                     </div>
                                 )}
                                 {artwork.status === 'vendida' && (
-                                    <div className="bg-red-500/95 text-white px-3 py-1 rounded-full text-sm font-medium shadow-sm">
+                                    <div className="bg-red-500/95 text-white px-2 py-0.5 rounded-full text-xs font-medium shadow-sm">
                                         Vendida
                                     </div>
                                 )}
                                 {artwork.status === 'disponible' && (
-                                    <div className="bg-green-500/95 text-white px-3 py-1 rounded-full text-sm font-medium shadow-sm">
+                                    <div className="bg-green-500/95 text-white px-2 py-0.5 rounded-full text-xs font-medium shadow-sm">
                                         Disponible
+                                    </div>
+                                )}
+                                {artwork.status === 'de cliente' && (
+                                    <div className="bg-blue-500/95 text-white px-2 py-0.5 rounded-full text-xs font-medium shadow-sm">
+                                        De cliente
                                     </div>
                                 )}
                             </div>

@@ -7,6 +7,59 @@ import { cn } from '@/lib/utils';
 import { ContactForm as ContactFormType } from '@/types';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
 
+// Simple SVG for WhatsApp Icon
+const WhatsAppIcon = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        {...props}
+    >
+        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+    </svg>
+);
+
+const contactInfo = [
+    {
+        icon: Mail,
+        title: 'Email',
+        value: 'unamiradaalarte@gmail.com',
+        href: 'unamiradaalarte@gmail.com',
+        bgColor: 'bg-blue-500/10',
+        textColor: 'text-blue-600',
+    },
+    {
+        icon: Phone,
+        title: 'Teléfono',
+        value: '+506 6243-9258',
+        href: 'tel:+506 6243-9258',
+        bgColor: 'bg-purple-500/10',
+        textColor: 'text-purple-600',
+    },
+    {
+        icon: MapPin,
+        title: 'Ubicación',
+        value: 'San José, Costa Rica',
+        href: '#',
+        bgColor: 'bg-pink-500/10',
+        textColor: 'text-pink-600',
+    },
+    {
+        icon: WhatsAppIcon,
+        title: 'Whatsapp',
+        value: '+506 6243-9258',
+        href: 'https://wa.me/50662439258',
+        bgColor: 'bg-green-500/20',
+        textColor: 'text-green-700',
+    },
+];
+
 // Webhook URL de Make
 const WEBHOOK_API = '/api/make-webhook';
 
@@ -98,41 +151,23 @@ export function ContactForm() {
         <div>
           <h3 className="text-2xl font-bold mb-6">Información de Contacto</h3>
           <div className="space-y-4">
-            <div className="group relative p-[1px] rounded-xl bg-gradient-to-r from-primary-400/40 via-fuchsia-400/40 to-amber-400/40 hover:from-primary-400 hover:to-amber-400 transition-colors">
-              <div className="flex items-start gap-4 rounded-xl bg-white/80 backdrop-blur-md p-4 shadow-sm transition-transform duration-300 group-hover:-translate-y-0.5">
-                <div className="p-3 rounded-lg bg-primary-100/70 text-primary-600 shadow-inner">
-                  <Mail className="h-5 w-5" />
-                </div>
-                <div>
-                  <h4 className="font-medium mb-1">Email</h4>
-                  <p className="text-gray-600">unamiradaalarte@gmail.com</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="group relative p-[1px] rounded-xl bg-gradient-to-r from-primary-400/40 via-fuchsia-400/40 to-amber-400/40 hover:from-primary-400 hover:to-amber-400 transition-colors">
-              <div className="flex items-start gap-4 rounded-xl bg-white/80 backdrop-blur-md p-4 shadow-sm transition-transform duration-300 group-hover:-translate-y-0.5">
-                <div className="p-3 rounded-lg bg-primary-100/70 text-primary-600 shadow-inner">
-                  <Phone className="h-5 w-5" />
-                </div>
-                <div>
-                  <h4 className="font-medium mb-1">Teléfono</h4>
-                  <p className="text-gray-600">+506 8383-8383</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="group relative p-[1px] rounded-xl bg-gradient-to-r from-primary-400/40 via-fuchsia-400/40 to-amber-400/40 hover:from-primary-400 hover:to-amber-400 transition-colors">
-              <div className="flex items-start gap-4 rounded-xl bg-white/80 backdrop-blur-md p-4 shadow-sm transition-transform duration-300 group-hover:-translate-y-0.5">
-                <div className="p-3 rounded-lg bg-primary-100/70 text-primary-600 shadow-inner">
-                  <MapPin className="h-5 w-5" />
-                </div>
-                <div>
-                  <h4 className="font-medium mb-1">Ubicación</h4>
-                  <p className="text-gray-600">Cartago, Costa Rica</p>
-                </div>
-              </div>
-            </div>
+            {contactInfo.map((item) => (
+                <a
+                    key={item.title}
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`group p-4 rounded-xl flex items-center space-x-4 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 ${item.bgColor}`}
+                >
+                    <div className={`p-3 rounded-full ${item.bgColor}`}>
+                        <item.icon className={`h-6 w-6 ${item.textColor}`} />
+                    </div>
+                    <div>
+                        <h3 className={`text-lg font-semibold ${item.textColor}`}>{item.title}</h3>
+                        <p className="text-gray-600">{item.value}</p>
+                    </div>
+                </a>
+            ))}
           </div>
         </div>
 

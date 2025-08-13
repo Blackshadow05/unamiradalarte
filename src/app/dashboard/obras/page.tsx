@@ -188,6 +188,9 @@ export default function ObrasPage() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
+    // Emitir evento para sincronizar estado con GalleryFull
+    const event = new CustomEvent('updateGalleryState', { detail: formData.Estado });
+    window.dispatchEvent(event);
     e.preventDefault();
     setSubmitting(true);
 
@@ -329,7 +332,7 @@ export default function ObrasPage() {
   });
 
   const categories = ['Todas', ...Array.from(new Set(artworks.map(a => a.Categoria).filter(Boolean)))];
-  const estados = ['Todos', 'Disponible', 'Vendido'];
+  const estados = ['Todos', 'Disponible', 'Vendido', 'De cliente'];
 
   if (loading) {
     return (
@@ -654,6 +657,7 @@ export default function ObrasPage() {
                   >
                     <option value="Disponible">Disponible</option>
                     <option value="Vendido">Vendido</option>
+                    <option value="De cliente">De cliente</option>
                   </select>
                 </div>
                 

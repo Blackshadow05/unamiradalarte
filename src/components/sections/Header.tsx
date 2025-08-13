@@ -53,7 +53,7 @@ export function Header({ initialSolid = false }: HeaderProps) {
             <span
               className={cn(
                 "text-xl font-bold transition-colors",
-                scrolled ? "text-gray-900" : "text-white drop-shadow"
+                scrolled ? "text-gray-900" : "text-primary-500 drop-shadow"
               )}
             >
               Una Mirada al Arte

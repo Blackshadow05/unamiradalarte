@@ -69,7 +69,6 @@ export default function HomePage() {
 
       {/* Contacto */}
       <section id="contacto" className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h2 className="text-2xl md:text-3xl font-semibold mb-6">Contacto y encargos</h2>
         <Contact />
       </section>
       <SimpleFooter />

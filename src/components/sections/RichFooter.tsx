@@ -74,7 +74,6 @@ export function RichFooter() {
               <FooterLink href="/#testimonios">Testimonios</FooterLink>
               <FooterLink href="/#destacadas">Obras destacadas</FooterLink>
               <FooterLink href="/#contacto">Contacto</FooterLink>
-              <FooterLink href="/dashboard">Panel</FooterLink>
             </ul>
           </div>
 
@@ -121,11 +120,11 @@ export function RichFooter() {
             <div className="mt-6 space-y-2 text-sm">
               <p className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
                 <Mail className="h-4 w-4 text-primary-500" />
-                contacto@unamiradaalarte.com
+                unamiradaalarte@gmail.com
               </p>
               <p className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
                 <Phone className="h-4 w-4 text-primary-500" />
-                +506 0000 0000
+                +506 6243-9258
               </p>
               <p className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
                 <MapPin className="h-4 w-4 text-primary-500" />

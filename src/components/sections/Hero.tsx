@@ -36,7 +36,7 @@ export function Hero() {
           <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
             <span className="text-gradient">Retratos de mascotas</span> pintados a mano
             <br />
-            por encargo en San José, Costa Rica
+            por encargo
           </h1>
           
           <p className="text-lg md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
