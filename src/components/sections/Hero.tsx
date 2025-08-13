@@ -22,9 +22,11 @@ export function Hero() {
       <div className="absolute inset-0 gradient-animation opacity-10" />
       
       {/* Floating elements */}
-      <div className="hidden sm:block absolute top-20 left-10 w-20 h-20 bg-primary-200 rounded-full animate-float opacity-60" />
-      <div className="hidden sm:block absolute top-40 right-20 w-16 h-16 bg-accent-200 rounded-full animate-float opacity-60" style={{ animationDelay: '2s' }} />
-      <div className="hidden sm:block absolute bottom-40 left-20 w-12 h-12 bg-primary-300 rounded-full animate-float opacity-60" style={{ animationDelay: '4s' }} />
+      <div className="absolute top-20 left-10 w-20 h-20 bg-primary-200 rounded-full animate-float opacity-60" />
+      <div className="absolute top-40 right-20 w-16 h-16 bg-accent-200 rounded-full animate-float opacity-60" style={{ animationDelay: '2s' }} />
+      <div className="absolute bottom-40 left-20 w-12 h-12 bg-primary-300 rounded-full animate-float opacity-60" style={{ animationDelay: '4s' }} />
+      <div className="absolute top-5 left-5 w-16 h-16 bg-primary-400 rounded-full animate-float opacity-60" style={{ animationDelay: '1s' }} />
+      <div className="absolute bottom-5 right-10 w-18 h-18 bg-accent-400 rounded-full animate-float opacity-60" style={{ animationDelay: '3s' }} />
       
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div className="animate-fade-in-blur">

@@ -19,7 +19,7 @@ export interface Artwork {
   creationTime: string;
   rating: number;
   reviewCount: number;
-  status: 'disponible' | 'vendida' | 'reservada';
+  status: 'disponible' | 'vendida' | 'reservada' | 'de cliente';
 }
 
 export interface Review {
