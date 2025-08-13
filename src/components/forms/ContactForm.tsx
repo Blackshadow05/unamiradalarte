@@ -30,7 +30,6 @@ const contactInfo = [
         icon: Mail,
         title: 'Email',
         value: 'unamiradaalarte@gmail.com',
-        href: 'unamiradaalarte@gmail.com',
         bgColor: 'bg-blue-500/10',
         textColor: 'text-blue-600',
     },
@@ -38,7 +37,6 @@ const contactInfo = [
         icon: Phone,
         title: 'Teléfono',
         value: '+506 6243-9258',
-        href: 'tel:+506 6243-9258',
         bgColor: 'bg-purple-500/10',
         textColor: 'text-purple-600',
     },
@@ -46,7 +44,6 @@ const contactInfo = [
         icon: MapPin,
         title: 'Ubicación',
         value: 'San José, Costa Rica',
-        href: '#',
         bgColor: 'bg-pink-500/10',
         textColor: 'text-pink-600',
     },
@@ -151,23 +148,39 @@ export function ContactForm() {
         <div>
           <h3 className="text-2xl font-bold mb-6">Información de Contacto</h3>
           <div className="space-y-4">
-            {contactInfo.map((item) => (
-                <a
-                    key={item.title}
-                    href={item.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`group p-4 rounded-xl flex items-center space-x-4 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 ${item.bgColor}`}
-                >
-                    <div className={`p-3 rounded-full ${item.bgColor}`}>
-                        <item.icon className={`h-6 w-6 ${item.textColor}`} />
+            {contactInfo.map((item) => {
+                const content = (
+                    <>
+                        <div className={`p-3 rounded-full ${item.bgColor}`}>
+                            <item.icon className={`h-6 w-6 ${item.textColor}`} />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                            <h3 className={`text-lg font-semibold ${item.textColor}`}>{item.title}</h3>
+                            <p className="text-gray-600 break-words text-xs">{item.value}</p>
+                        </div>
+                    </>
+                );
+
+                if (item.title === 'Whatsapp') {
+                    return (
+                        <a
+                            key={item.title}
+                            href={item.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={`group p-4 rounded-xl flex items-center space-x-4 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 ${item.bgColor}`}
+                        >
+                            {content}
+                        </a>
+                    );
+                }
+
+                return (
+                    <div key={item.title} className={`p-4 rounded-xl flex items-center space-x-4 ${item.bgColor}`}>
+                        {content}
                     </div>
-                    <div>
-                        <h3 className={`text-lg font-semibold ${item.textColor}`}>{item.title}</h3>
-                        <p className="text-gray-600">{item.value}</p>
-                    </div>
-                </a>
-            ))}
+                );
+            })}
           </div>
         </div>
 

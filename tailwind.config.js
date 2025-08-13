@@ -5,6 +5,18 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        brand: {
+          50:  '#f5faff',
+          100: '#e0f2ff',
+          200: '#bae4ff',
+          300: '#7fd0ff',
+          400: '#38b2ff',
+          500: '#0094ff',  // Primario
+          600: '#0077cc',  // Hover / énfasis
+          700: '#005c99',
+          800: '#003d66',
+          900: '#001f33'
+        },
         primary: {
           50: '#fdf4ff',
           100: '#fae8ff',
@@ -28,11 +40,6 @@ module.exports = {
           700: '#c026d3',
           800: '#a21caf',
           900: '#86198f',
-        },
-        brand: {
-          magenta: '#D4007E',
-          magentaDark: '#B10063',
-          magentaLight: '#FF4DAD',
         },
       },
       animation: {
