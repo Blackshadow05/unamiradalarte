@@ -71,9 +71,6 @@ export function Header({ initialSolid = false }: HeaderProps) {
     {item.name}
   </Link>
 ))}
-        <Link href="/contacto">
-              <Button size="sm">Contactar</Button>
-            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -107,13 +104,6 @@ export function Header({ initialSolid = false }: HeaderProps) {
                   {item.name}
                 </Link>
               ))}
-              <div className="pt-2">
-                <Link href="#contacto-form">
-                  <Button size="sm" className="w-full">
-                    Contactar
-                  </Button>
-                </Link>
-              </div>
             </div>
           </div>
         )}

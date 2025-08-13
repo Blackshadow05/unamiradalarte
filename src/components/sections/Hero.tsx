@@ -3,10 +3,8 @@
 import { Button } from '@/components/ui/Button';
 import { ArrowDown, Sparkles } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 
 export function Hero() {
-  const router = useRouter();
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -46,18 +44,18 @@ export function Hero() {
             Capturo la personalidad y mirada de tu compañero fiel.
           </p>
           
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
-            <Link href="https://wa.me/XXXXXXXXXX" aria-label="Encargar retrato por WhatsApp">
-              <Button size="lg" className="px-8 py-4">
-                Encargar por WhatsApp
-              </Button>
-            </Link>
-            <Link href="/galeria">
-              <Button variant="outline" size="lg" className="px-8 py-4">
-                Ver galería
-              </Button>
-            </Link>
-          </div>
+<div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+  <Link href="/#contacto" aria-label="Contactar">
+    <Button size="lg" className="px-8 py-4">
+      Contactar
+    </Button>
+  </Link>
+  <Link href="/galeria">
+    <Button variant="outline" size="lg" className="px-8 py-4">
+      Ver galería
+    </Button>
+  </Link>
+</div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             <div className="text-center">
