@@ -569,176 +569,179 @@ export function GalleryFull({ showFilters = true, featuredOnly = false }: { show
     onEstadoChange={handleEstadoChange}
   />
 )}
-                {/* Grid de obras */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8 mb-12">
-                    {currentArtworks.map((artwork) => (
-                        <Card key={artwork.id} className="group">
-                            {/* Imagen más ancha en móvil */}
-                            <div className="relative overflow-hidden -mx-4 sm:mx-0">
-                                <div className="w-full aspect-[4/3] relative">
-                                    <Image
-                                        src={artwork.image}
-                                        alt={artwork.title}
-                                        fill
-                                        style={{ objectFit: 'cover' }}
-                                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                                        quality={75}
-                                        placeholder="blur"
-                                        blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
-                                    />
-                                </div>
+            {/* Grid de obras */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8 mb-12">
+                {currentArtworks.map((artwork) => (
+                    <div key={artwork.id} className="group relative p-[1px] rounded-xl bg-gradient-to-br from-primary-400/40 via-fuchsia-400/30 to-amber-400/40 transition-transform duration-300 hover:-translate-y-0.5">
+                      <Card className="relative rounded-xl overflow-hidden bg-white shadow-md transition-shadow duration-300 group-hover:shadow-xl">
+                         {/* Imagen más ancha en móvil */}
+                        <div className="relative overflow-hidden -mx-4 sm:mx-0">
+                            <div className="w-full aspect-[4/3] relative">
+                                <Image
+                                    src={artwork.image}
+                                    alt={artwork.title}
+                                    fill
+                                    style={{ objectFit: 'cover' }}
+                                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                                    quality={75}
+                                    placeholder="blur"
+                                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k"
+                                    className="transition-transform duration-500 ease-out group-hover:scale-105"
+                                />
+                            </div>
 
-                                {/* Overlay with actions */}
-                                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                                    <div className="flex space-x-4">
-                                        <button
-                                            onClick={() => handleViewArtwork(artwork)}
-                                            className="p-3 bg-white/20 backdrop-blur-sm rounded-full text-white hover:bg-white/30 transition-colors"
-                                        >
-                                            <Eye className="h-5 w-5" />
-                                        </button>
-                                        <button
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                toggleFavorite(artwork.id);
-                                            }}
-                                            className={cn(
-                                                'p-3 backdrop-blur-sm rounded-full transition-colors',
-                                                favorites.has(artwork.id)
-                                                    ? 'bg-red-500 text-white'
-                                                    : 'bg-white/20 text-white hover:bg-white/30'
-                                            )}
-                                        >
-                                            <Heart className={cn('h-5 w-5', favorites.has(artwork.id) && 'fill-current')} />
-                                        </button>
+                            {/* Overlay with actions */}
+                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                <div className="flex space-x-4">
+                                    <button
+                                        onClick={() => handleViewArtwork(artwork)}
+                                        className="p-3 bg-white/20 backdrop-blur-sm rounded-full text-white hover:bg-white/30 transition-colors"
+                                    >
+                                        <Eye className="h-5 w-5" />
+                                    </button>
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            toggleFavorite(artwork.id);
+                                        }}
+                                        className={cn(
+                                            'p-3 backdrop-blur-sm rounded-full transition-colors',
+                                            favorites.has(artwork.id)
+                                                ? 'bg-red-500 text-white'
+                                                : 'bg-white/20 text-white hover:bg-white/30'
+                                        )}
+                                    >
+                                        <Heart className={cn('h-5 w-5', favorites.has(artwork.id) && 'fill-current')} />
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Badges */}
+                            <div className="absolute top-4 left-4 flex flex-col gap-2">
+                                {artwork.featured && (
+                                    <div className="bg-primary-500/95 text-white px-3 py-1 rounded-full text-sm font-medium shadow-sm">
+                                        Destacada
                                     </div>
-                                </div>
-
-                                {/* Badges */}
-                                <div className="absolute top-4 left-4 flex flex-col gap-2">
-                                    {artwork.featured && (
-                                        <div className="bg-primary-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-                                            Destacada
-                                        </div>
-                                    )}
-                                    {artwork.status === 'vendida' && (
-                                        <div className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-                                            Vendida
-                                        </div>
-                                    )}
-                                    {artwork.status === 'disponible' && (
-                                        <div className="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-                                            Disponible
-                                        </div>
-                                    )}
-                                </div>
+                                )}
+                                {artwork.status === 'vendida' && (
+                                    <div className="bg-red-500/95 text-white px-3 py-1 rounded-full text-sm font-medium shadow-sm">
+                                        Vendida
+                                    </div>
+                                )}
+                                {artwork.status === 'disponible' && (
+                                    <div className="bg-green-500/95 text-white px-3 py-1 rounded-full text-sm font-medium shadow-sm">
+                                        Disponible
+                                    </div>
+                                )}
                             </div>
+                        </div>
 
-                            <div className="p-4 sm:p-6">
-                                <div className="flex items-start justify-between mb-2">
-                                    <h3 className="text-xl font-bold text-gray-900">{artwork.title}</h3>
-                                    {artwork.price > 0 && (
-                                        <span className={cn(
-                                            "text-lg font-bold",
-                                            artwork.status === 'vendida' 
-                                                ? 'text-gray-400 line-through' 
-                                                : 'text-primary-500'
-                                        )}>
-                                            {formatPrice(artwork.price)}
-                                        </span>
-                                    )}
-                                </div>
-
-                                <div className="flex items-center space-x-2 mb-3">
-                                    <StarRating rating={artwork.rating} readonly size="sm" />
-                                    <span className="text-sm text-gray-500">
-                                        ({artwork.reviewCount})
-                                    </span>
-                                </div>
-
-                                <p className="text-gray-600 mb-4 line-clamp-2">{artwork.description}</p>
-
-                                <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
-                                    <span className="capitalize">{artwork.category}</span>
-                                    {artwork.dimensions && <span>{artwork.dimensions}</span>}
-                                    <span>{artwork.year}</span>
-                                </div>
-                                
-                                {/* Estado de la obra */}
-                                <div className="flex items-center justify-between mb-4">
+                        <div className="p-4 sm:p-6">
+                            <div className="flex items-start justify-between mb-2">
+                                <h3 className="text-xl font-bold text-gray-900">{artwork.title}</h3>
+                                {artwork.price > 0 && (
                                     <span className={cn(
-                                        "px-2 py-1 rounded-full text-xs font-medium",
-                                        artwork.status === 'disponible' 
-                                            ? 'bg-green-100 text-green-700' 
-                                            : 'bg-red-100 text-red-700'
+                                        "text-lg font-bold",
+                                        artwork.status === 'vendida' 
+                                            ? 'text-gray-400 line-through' 
+                                            : 'text-primary-500'
                                     )}>
-                                        {artwork.status === 'disponible' ? 'Disponible' : 'Vendida'}
+                                        {formatPrice(artwork.price)}
                                     </span>
-                                    {artwork.price > 0 && artwork.status === 'disponible' && (
-                                        <span className="text-sm text-gray-600">
-                                            Precio: {formatPrice(artwork.price)}
-                                        </span>
-                                    )}
-                                </div>
-
-                              <Button
-                                className={cn(
-                                  "w-full",
-                                  artwork.status === 'vendida' ? "bg-gray-400 hover:bg-gray-400" : ""
                                 )}
-                                onClick={() => handleViewArtwork(artwork)}
-                              >
-                                {artwork.status === 'vendida' ? '🔒 Obra Vendida' : '👁️ Ver Detalles'}
-                              </Button>
                             </div>
-                        </Card>
-                    ))}
-                </div>
 
-                {/* Paginación */}
-                {totalPages > 1 && (
-                    <div className="flex items-center justify-center space-x-2">
-                        <button
-                            onClick={() => handlePageChange(currentPage - 1)}
-                            disabled={currentPage === 1}
-                            className={cn(
-                                'p-2 rounded-lg transition-colors',
-                                currentPage === 1
-                                    ? 'text-gray-400 cursor-not-allowed'
-                                    : 'text-gray-700 hover:bg-gray-100'
-                            )}
-                        >
-                            <ChevronLeft className="h-5 w-5" />
-                        </button>
+                            <div className="flex items-center space-x-2 mb-3">
+                                <StarRating rating={artwork.rating} readonly size="sm" />
+                                <span className="text-sm text-gray-500">
+                                    ({artwork.reviewCount})
+                                </span>
+                            </div>
 
-                        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                            <button
-                                key={page}
-                                onClick={() => handlePageChange(page)}
-                                className={cn(
-                                    'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
-                                    currentPage === page
-                                        ? 'bg-primary-500 text-white'
-                                        : 'text-gray-700 hover:bg-gray-100'
+                            <p className="text-gray-600 mb-4 line-clamp-2">{artwork.description}</p>
+
+                            <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
+                                <span className="capitalize">{artwork.category}</span>
+                                {artwork.dimensions && <span>{artwork.dimensions}</span>}
+                                <span>{artwork.year}</span>
+                            </div>
+                            
+                            {/* Estado de la obra */}
+                            <div className="flex items-center justify-between mb-4">
+                                <span className={cn(
+                                    "px-2 py-1 rounded-full text-xs font-medium",
+                                    artwork.status === 'disponible' 
+                                        ? 'bg-green-100 text-green-700' 
+                                        : 'bg-red-100 text-red-700'
+                                )}>
+                                    {artwork.status === 'disponible' ? 'Disponible' : 'Vendida'}
+                                </span>
+                                {artwork.price > 0 && artwork.status === 'disponible' && (
+                                    <span className="text-sm text-gray-600">
+                                        Precio: {formatPrice(artwork.price)}
+                                    </span>
                                 )}
-                            >
-                                {page}
-                            </button>
-                        ))}
+                            </div>
 
-                        <button
-                            onClick={() => handlePageChange(currentPage + 1)}
-                            disabled={currentPage === totalPages}
+                          <Button
                             className={cn(
-                                'p-2 rounded-lg transition-colors',
-                                currentPage === totalPages
-                                    ? 'text-gray-400 cursor-not-allowed'
+                              "w-full",
+                              artwork.status === 'vendida' ? "bg-gray-400 hover:bg-gray-400" : ""
+                            )}
+                            onClick={() => handleViewArtwork(artwork)}
+                          >
+                            {artwork.status === 'vendida' ? '🔒 Obra Vendida' : '👁️ Ver Detalles'}
+                          </Button>
+                        </div>
+                      </Card>
+                    </div>
+                ))}
+            </div>
+
+            {/* Paginación */}
+            {totalPages > 1 && (
+                <div className="flex items-center justify-center space-x-2">
+                    <button
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                        className={cn(
+                            'p-2 rounded-lg transition-colors',
+                            currentPage === 1
+                                ? 'text-gray-400 cursor-not-allowed'
+                                : 'text-gray-700 hover:bg-gray-100'
+                        )}
+                    >
+                        <ChevronLeft className="h-5 w-5" />
+                    </button>
+
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                        <button
+                            key={page}
+                            onClick={() => handlePageChange(page)}
+                            className={cn(
+                                'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
+                                currentPage === page
+                                    ? 'bg-primary-500 text-white'
                                     : 'text-gray-700 hover:bg-gray-100'
                             )}
                         >
-                            <ChevronRight className="h-5 w-5" />
+                            {page}
                         </button>
-                    </div>
+                    ))}
+
+                    <button
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                        className={cn(
+                            'p-2 rounded-lg transition-colors',
+                            currentPage === totalPages
+                                ? 'text-gray-400 cursor-not-allowed'
+                                : 'text-gray-700 hover:bg-gray-100'
+                        )}
+                    >
+                        <ChevronRight className="h-5 w-5" />
+                    </button>
+                </div>
                 )}
             </div>
 
