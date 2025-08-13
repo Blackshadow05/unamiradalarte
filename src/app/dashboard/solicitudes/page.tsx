@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Header } from '@/components/sections/Header';
 import { SimpleFooter } from '@/components/sections/SimpleFooter';
+import { Modal } from '@/components/ui/Modal';
 import { 
   MessageSquare,
   Clock,
@@ -17,7 +18,8 @@ import {
   Edit3,
   AlertCircle,
   User,
-  Menu
+  Menu,
+  Plus
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { supabase } from '@/lib/supabase';
@@ -48,48 +50,130 @@ export default function SolicitudesPage() {
   const [error, setError] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editValues, setEditValues] = useState<Solicitud | null>(null);
+  
+  // Estados para el modal de nueva solicitud
+  const [showNewModal, setShowNewModal] = useState(false);
+  const [creatingRequest, setCreatingRequest] = useState(false);
+  const [newRequestData, setNewRequestData] = useState({
+    Nombre: '',
+    Email: '',
+    Celular: '',
+    Asunto: '',
+    Mensaje: '',
+    Prioridad: 'Media',
+    Estado: 'Pendiente',
+    Precio_pactado: '',
+    Fecha_entrega: '',
+    Notas: ''
+  });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      setError(null);
+  // Función separada para fetch de datos (reutilizable)
+  const fetchData = async () => {
+    setLoading(true);
+    setError(null);
+    const { data, error } = await supabase
+      .from('formulario_contacto')
+      .select('id, created_at, "Nombre", "Email", "Celular", "Asunto", "Mensaje", "Prioridad", "Estado", "Precio_pactado", "Fecha_entrega", "Notas"')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Error cargando solicitudes:', error);
+      setError('No se pudieron cargar las solicitudes.');
+      setRequests([]);
+    } else {
+      const mapped: Solicitud[] = (data || []).map((r: any) => ({
+        type: 'Solicitud',
+        client: r['Nombre'] ?? null,
+        email: r['Email'] ?? null,
+        phone: r['Celular'] ?? null,
+        subject: r['Asunto'] ?? null,
+        description: r['Mensaje'] ?? null,
+        budget: r['Precio_pactado'] ?? null,
+        status: r['Estado'] ?? null,
+        // created_at es el estándar en Supabase; si existiera un nombre alterno, usamos fallback
+        date: r['created_at'] ?? r['created-at'] ?? '',
+        priority: r['Prioridad'] ?? null,
+        // Normalizamos la fecha de entrega a ISO YYYY-MM-DD para el input date
+        deliveryDate: r['Fecha_entrega'] ? new Date(r['Fecha_entrega']).toISOString().slice(0, 10) : null,
+        // Guardamos notas como string legible (si viene JSON, lo convertimos)
+        notes: typeof r['Notas'] === 'string' ? r['Notas'] : (r['Notas'] ? JSON.stringify(r['Notas']) : null),
+        rowId: r['id'],
+      }));
+      console.log('Mapped requests:');
+      mapped.forEach((req, index) => {
+        console.log(`Index ${index}: Date = ${req.date}, RowId = ${req.rowId}, DateKey = ${dateKey(req.date)}`);
+      });
+      setRequests(mapped);
+    }
+    setLoading(false);
+  };
+
+  // Función auxiliar para obtener timestamp local sin zona horaria (YYYY-MM-DD HH:mm:ss)
+  const getLocalTimestamp = () => {
+    const d = new Date();
+    const pad = (n: number) => String(n).padStart(2, '0');
+    const yyyy = d.getFullYear();
+    const mm = pad(d.getMonth() + 1);
+    const dd = pad(d.getDate());
+    const hh = pad(d.getHours());
+    const mi = pad(d.getMinutes());
+    const ss = pad(d.getSeconds());
+    return `${yyyy}-${mm}-${dd} ${hh}:${mi}:${ss}`;
+  };
+  // Función para crear nueva solicitud
+  const createNewRequest = async () => {
+    setCreatingRequest(true);
+    setError(null);
+    
+    try {
       const { data, error } = await supabase
         .from('formulario_contacto')
-        .select('id, created_at, "Nombre", "Email", "Celular", "Asunto", "Mensaje", "Prioridad", "Estado", "Precio_pactado", "Fecha_entrega", "Notas"')
-        .order('created_at', { ascending: false });
-
+        .insert([{
+          created_at: getLocalTimestamp(),
+          "Nombre": newRequestData.Nombre || null,
+          "Email": newRequestData.Email || null,
+          "Celular": newRequestData.Celular || null,
+          "Asunto": newRequestData.Asunto || null,
+          "Mensaje": newRequestData.Mensaje || null,
+          "Prioridad": newRequestData.Prioridad || null,
+          "Estado": newRequestData.Estado || null,
+          "Precio_pactado": newRequestData.Precio_pactado || null,
+          "Fecha_entrega": newRequestData.Fecha_entrega || null,
+          "Notas": newRequestData.Notas || null
+        }])
+        .select();
+      
       if (error) {
-        console.error('Error cargando solicitudes:', error);
-        setError('No se pudieron cargar las solicitudes.');
-        setRequests([]);
+        console.error('Error creando solicitud:', error);
+        setError('No se pudo crear la solicitud.');
       } else {
-        const mapped: Solicitud[] = (data || []).map((r: any) => ({
-          type: 'Solicitud',
-          client: r['Nombre'] ?? null,
-          email: r['Email'] ?? null,
-          phone: r['Celular'] ?? null,
-          subject: r['Asunto'] ?? null,
-          description: r['Mensaje'] ?? null,
-          budget: r['Precio_pactado'] ?? null,
-          status: r['Estado'] ?? null,
-          // created_at es el estándar en Supabase; si existiera un nombre alterno, usamos fallback
-          date: r['created_at'] ?? r['created-at'] ?? '',
-          priority: r['Prioridad'] ?? null,
-          // Normalizamos la fecha de entrega a ISO YYYY-MM-DD para el input date
-          deliveryDate: r['Fecha_entrega'] ? new Date(r['Fecha_entrega']).toISOString().slice(0, 10) : null,
-          // Guardamos notas como string legible (si viene JSON, lo convertimos)
-          notes: typeof r['Notas'] === 'string' ? r['Notas'] : (r['Notas'] ? JSON.stringify(r['Notas']) : null),
-          rowId: r['id'],
-        }));
-        console.log('Mapped requests:');
-        mapped.forEach((req, index) => {
-          console.log(`Index ${index}: Date = ${req.date}, RowId = ${req.rowId}, DateKey = ${dateKey(req.date)}`);
+        // Cerrar modal y limpiar formulario
+        setShowNewModal(false);
+        setNewRequestData({
+          Nombre: '',
+          Email: '',
+          Celular: '',
+          Asunto: '',
+          Mensaje: '',
+          Prioridad: 'Media',
+          Estado: 'Pendiente',
+          Precio_pactado: '',
+          Fecha_entrega: '',
+          Notas: ''
         });
-        setRequests(mapped);
+        
+        // Recargar datos para mostrar la nueva solicitud
+        await fetchData();
       }
-      setLoading(false);
-    };
+    } catch (err) {
+      console.error('Error creating request:', err);
+      setError('Error inesperado al crear la solicitud.');
+    } finally {
+      setCreatingRequest(false);
+    }
+  };
 
+  useEffect(() => {
     fetchData();
   }, []);
 
@@ -260,6 +344,15 @@ export default function SolicitudesPage() {
           </div>
 
           <div className="flex w-full sm:w-auto flex-col sm:flex-row sm:items-center gap-3">
+            {/* Botón de Nueva Solicitud */}
+            <Button 
+              onClick={() => setShowNewModal(true)}
+              className="bg-primary-600 hover:bg-primary-700 text-white"
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Nueva Solicitud
+            </Button>
+            
             <div className="relative w-full sm:w-64">
               <input
                 type="text"
@@ -661,6 +754,191 @@ export default function SolicitudesPage() {
           </div>
         )}
       </div>
+
+      {/* Modal para Nueva Solicitud */}
+      <Modal
+        isOpen={showNewModal}
+        onClose={() => setShowNewModal(false)}
+        title="Nueva Solicitud"
+        size="lg"
+      >
+        <div className="p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Nombre */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Nombre
+              </label>
+              <input
+                type="text"
+                value={newRequestData.Nombre}
+                onChange={(e) => setNewRequestData(prev => ({ ...prev, Nombre: e.target.value }))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                placeholder="Nombre del cliente"
+              />
+            </div>
+
+            {/* Email */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Email
+              </label>
+              <input
+                type="email"
+                value={newRequestData.Email}
+                onChange={(e) => setNewRequestData(prev => ({ ...prev, Email: e.target.value }))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                placeholder="email@ejemplo.com"
+              />
+            </div>
+
+            {/* Celular */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Celular
+              </label>
+              <input
+                type="tel"
+                value={newRequestData.Celular}
+                onChange={(e) => setNewRequestData(prev => ({ ...prev, Celular: e.target.value }))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                placeholder="8888-8888"
+              />
+            </div>
+
+            {/* Asunto */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Asunto
+              </label>
+              <input
+                type="text"
+                value={newRequestData.Asunto}
+                onChange={(e) => setNewRequestData(prev => ({ ...prev, Asunto: e.target.value }))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                placeholder="Asunto de la solicitud"
+              />
+            </div>
+
+            {/* Prioridad */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Prioridad
+              </label>
+              <select
+                value={newRequestData.Prioridad}
+                onChange={(e) => setNewRequestData(prev => ({ ...prev, Prioridad: e.target.value }))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+              >
+                <option value="Baja">Baja</option>
+                <option value="Media">Media</option>
+                <option value="Alta">Alta</option>
+              </select>
+            </div>
+
+            {/* Estado */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Estado
+              </label>
+              <select
+                value={newRequestData.Estado}
+                onChange={(e) => setNewRequestData(prev => ({ ...prev, Estado: e.target.value }))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+              >
+                <option value="Pendiente">Pendiente</option>
+                <option value="En proceso">En proceso</option>
+                <option value="Completada">Completada</option>
+                <option value="Aceptado">Aceptado</option>
+                <option value="Rechazado">Rechazado</option>
+              </select>
+            </div>
+
+            {/* Precio pactado */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Precio pactado
+              </label>
+              <input
+                type="text"
+                value={newRequestData.Precio_pactado}
+                onChange={(e) => setNewRequestData(prev => ({ ...prev, Precio_pactado: e.target.value }))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                placeholder="₡25,000"
+              />
+            </div>
+
+            {/* Fecha de entrega */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Fecha de entrega
+              </label>
+              <input
+                type="date"
+                value={newRequestData.Fecha_entrega}
+                onChange={(e) => setNewRequestData(prev => ({ ...prev, Fecha_entrega: e.target.value }))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+              />
+            </div>
+          </div>
+
+          {/* Mensaje */}
+          <div className="mt-6">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Mensaje
+            </label>
+            <textarea
+              value={newRequestData.Mensaje}
+              onChange={(e) => setNewRequestData(prev => ({ ...prev, Mensaje: e.target.value }))}
+              rows={4}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+              placeholder="Descripción detallada de la solicitud..."
+            />
+          </div>
+
+          {/* Notas */}
+          <div className="mt-6">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Notas
+            </label>
+            <textarea
+              value={newRequestData.Notas}
+              onChange={(e) => setNewRequestData(prev => ({ ...prev, Notas: e.target.value }))}
+              rows={3}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+              placeholder="Notas adicionales internas..."
+            />
+          </div>
+
+          {/* Botones de acción */}
+          <div className="flex justify-end space-x-3 mt-8">
+            <Button
+              variant="outline"
+              onClick={() => setShowNewModal(false)}
+              disabled={creatingRequest}
+            >
+              Cancelar
+            </Button>
+            <Button
+              onClick={createNewRequest}
+              disabled={creatingRequest}
+              className="bg-primary-600 hover:bg-primary-700 text-white"
+            >
+              {creatingRequest ? (
+                <>
+                  <Clock className="h-4 w-4 mr-2 animate-spin" />
+                  Creando...
+                </>
+              ) : (
+                <>
+                  <CheckCircle className="h-4 w-4 mr-2" />
+                  Crear Solicitud
+                </>
+              )}
+            </Button>
+          </div>
+        </div>
+      </Modal>
 
       <SimpleFooter />
     </main>

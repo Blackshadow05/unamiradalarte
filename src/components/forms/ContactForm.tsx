@@ -35,8 +35,8 @@ export function ContactForm() {
     // Build payload from form data
     const now = new Date();
     const pad = (n: number) => String(n).padStart(2, '0');
-    // Local device time without timezone info
-    const createdAtLocal = `${pad(now.getDate())}-${pad(now.getMonth() + 1)}-${now.getFullYear()} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
+    // Local device time without timezone info - formato YYYY-MM-DD HH:MM:SS para evitar ambigüedad
+    const createdAtLocal = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:00`;
     const payload = {
       name: formData.name,
       email: formData.email,
