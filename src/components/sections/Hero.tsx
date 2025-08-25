@@ -28,6 +28,12 @@ export function Hero() {
       <div className="absolute top-5 left-5 w-16 h-16 bg-primary-400 rounded-full animate-float opacity-60" style={{ animationDelay: '1s' }} />
       <div className="absolute bottom-5 right-10 w-18 h-18 bg-accent-400 rounded-full animate-float opacity-60" style={{ animationDelay: '3s' }} />
       
+      {/* Nuevas burbujas que rebotan */}
+      <div className="absolute top-32 left-24 w-8 h-8 bg-accent-300 rounded-full animate-bounce opacity-50" style={{ animationDuration: '5s', animationDelay: '1s' }} />
+      <div className="absolute bottom-32 right-24 w-10 h-10 bg-primary-400 rounded-full animate-bounce opacity-50" style={{ animationDuration: '7s', animationDelay: '2s' }} />
+      <div className="absolute top-1/4 left-1/4 w-6 h-6 bg-accent-500 rounded-full animate-bounce opacity-50" style={{ animationDuration: '6s', animationDelay: '0.5s' }} />
+      <div className="absolute bottom-1/4 right-1/4 w-12 h-12 bg-primary-300 rounded-full animate-bounce opacity-50" style={{ animationDuration: '8s', animationDelay: '3s' }} />
+      <div className="absolute top-64 left-1/2 w-7 h-7 bg-accent-400 rounded-full animate-bounce opacity-50" style={{ animationDuration: '5.5s', animationDelay: '4s' }} />
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div className="animate-fade-in-blur">
           <div className="flex items-center justify-center mb-6">

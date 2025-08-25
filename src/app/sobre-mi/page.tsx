@@ -89,7 +89,7 @@ export default function SobreMiPruebaPage() {
                 alt="Artista en su estudio"
                 width={500}
                 height={600}
-                className="rounded-2xl shadow-2xl w-full h-auto object-cover"
+                className="rounded-2xl shadow-2xl w-full lg:w-4/5 lg:mx-auto h-auto object-cover"
                 priority
               />
             </div>

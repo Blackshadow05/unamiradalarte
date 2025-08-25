@@ -8,9 +8,9 @@ export function RichFooter() {
   const [email, setEmail] = useState("");
 
   return (
-    <footer className="relative border-t border-gray-200 dark:border-gray-800 bg-gradient-to-r from-fuchsia-50 via-fuchsia-100 to-fuchsia-200 dark:from-fuchsia-900 dark:to-fuchsia-800 text-black dark:text-white" style={{ textShadow: '0 1px 0 rgba(0,0,0,0.25)' }}>
+    <footer className="relative border-t border-gray-200 dark:border-gray-800 bg-gradient-to-r from-fuchsia-50 via-fuchsia-100 to-fuchsia-200 dark:from-fuchsia-900 dark:to-fuchsia-800 text-black dark:text-white">
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12" style={{ textRendering: 'optimizeLegibility', WebkitFontSmoothing: 'antialiased' }}>
         {/* Top: Brand + Newsletter */}
         <div className="grid grid-cols-1 md:grid-cols-5 gap-10 md:gap-8 items-start">
           {/* Brand */}
@@ -23,11 +23,18 @@ export function RichFooter() {
                 <p className="text-xl font-bold tracking-tight group-hover:text-primary-500 transition-colors">
                   Una Mirada al Arte
                 </p>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
+                <p className="text-sm text-gray-500 dark:text-gray-400" style={{ letterSpacing: '0.02em' }}>
                   Galería digital de obras contemporáneas
                 </p>
               </div>
             </Link>
+
+            <p className="mt-5 text-sm text-gray-600 dark:text-gray-400 leading-relaxed" style={{ letterSpacing: '0.01em' }}>
+              Celebramos la creatividad con una selección curada de piezas únicas. Explora, conecta con el proceso creativo
+              y descubre nuevas perspectivas a través del arte.
+            </p>
+
+            {/* Social links */}
 
             <p className="mt-5 text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
               Celebramos la creatividad con una selección curada de piezas únicas. Explora, conecta con el proceso creativo
@@ -141,7 +148,7 @@ export function RichFooter() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-xs text-gray-500 dark:text-gray-500">
             © {new Date().getFullYear()} Una Mirada al Arte. Hecho con{" "}
-            <Heart className="inline h-3 w-3 text-red-500 fill-current align-text-top" /> para el arte.
+            <Heart className="inline h-3 w-3 text-red-500 fill-current align-text-top" style={{ filter: 'drop-shadow(0 0 1px rgba(0,0,0,0.1))', transform: 'translateY(-1px)', WebkitFontSmoothing: 'antialiased' }} /> para el arte.
           </p>
 
           <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-500">

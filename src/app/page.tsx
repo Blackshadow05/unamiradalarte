@@ -8,7 +8,6 @@ import { GalleryFull } from '@/components/sections/GalleryFull';
 import ServicesList from '@/components/sections/ServicesList';
 // import { Services } from '@/components/sections/Services'; // If not used, remove to avoid lint
 import { Contact } from '@/components/sections/Contact';
-import { SectionHeading } from '@/components/ui/SectionHeading';
 import { RandomReviews } from '@/components/sections/RandomReviews';
 
 import { useEffect, useRef } from 'react';
@@ -48,23 +47,18 @@ export default function HomePage() {
       <Hero />
 
       {/* Galería destacada */}
-      <section id="galeria" className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <section id="galeria" className="container mx-auto px-4 sm:px-6 lg:px-8 pb-8 pt-12">
         <h2 className="sr-only">Galería de retratos de mascotas</h2>
         <GalleryFull showFilters={false} featuredOnly={true} />
       </section>
 
       {/* Servicios principales */}
-      <section id="servicios" className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <SectionHeading color="primary">Retratos de mascotas: técnicas y opciones</SectionHeading>
-        <p className="text-gray-600 mb-6">
-          Trabajo en óleo, acrílico y lápiz a partir de tus fotos. Entrega típica en ~15 días y envíos a toda Costa Rica.
-        </p>
+      <section id="servicios" className="container mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-12">
         <ServicesList />
       </section>
 
       {/* Opiniones */}
       <section id="opiniones" className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <SectionHeading color="secondary">Opiniones de clientes</SectionHeading>
         <RandomReviews />
       </section>
 
