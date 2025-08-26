@@ -13,6 +13,8 @@ import { RandomReviews } from '@/components/sections/RandomReviews';
 import { useEffect, useRef } from 'react';
 import { addVisitRow } from '@/lib/supabase-queries';
 import Script from 'next/script';
+import Link from 'next/link';
+import { Button } from '@/components/ui/Button';
 
 export default function HomePage() {
   // Evitar doble inserción por montaje doble en StrictMode (dev)
@@ -48,8 +50,20 @@ export default function HomePage() {
 
       {/* Galería destacada */}
       <section id="galeria" className="container mx-auto px-4 sm:px-6 lg:px-8 pb-8 pt-12">
-        <h2 className="sr-only">Galería de retratos de mascotas</h2>
+        <div className="text-center mb-8 sm:mb-10">
+           <p className="text-xs font-semibold tracking-widest text-gray-500 uppercase">Galería</p>
+           <h2 className="mt-3 text-3xl sm:text-4xl font-extrabold">
+             <span className="bg-gradient-to-r from-pink-600 via-fuchsia-600 to-amber-600 bg-clip-text text-transparent">
+               Obras destacadas
+             </span>
+           </h2>
+         </div>
         <GalleryFull showFilters={false} featuredOnly={true} />
+        <div className="-mt-16 mb-12 text-center relative z-50">
+          <Link href="/galeria" aria-label="Ver más obras destacadas en la galería">
+        <Button size="md" variant="outline">Ver más obras</Button>
+          </Link>
+        </div>
       </section>
 
       {/* Servicios principales */}

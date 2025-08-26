@@ -48,7 +48,7 @@ export function Hero() {
           </h1>
           
           <p className="text-lg md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
-            Óleo, acrílico y lápiz a partir de tus fotos. Entrega en ~15 días y envíos a toda Costa Rica. 
+            Óleo, acrílico y lápiz a partir de tus fotos. Entrega en 15 días y envíos a toda Costa Rica. 
             Capturo la personalidad y mirada de tu compañero fiel.
           </p>
           

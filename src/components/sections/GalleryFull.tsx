@@ -2,13 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
-import { StarRating } from '@/components/ui/StarRating';
 import { ArtworkDetail } from '@/components/sections/ArtworkDetail';
-import { cn, formatPrice } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { Artwork } from '@/types';
-import { Eye, Heart, ChevronLeft, ChevronRight, Loader2, AlertCircle } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Loader2, AlertCircle } from 'lucide-react';
 import { getGaleriaItems, GaleriaItem } from '@/lib/supabase-queries';
 import { getArtworkRatings, addArtworkRating, getArtworkRatingStats, convertArtworkRatingToReview } from '@/lib/supabase';
 import { Review, ReviewForm, ArtworkRating } from '@/types';
@@ -65,7 +63,6 @@ const ITEMS_PER_PAGE = 15;
 
 export function GalleryFull({ showFilters = true, featuredOnly = false }: { showFilters?: boolean; featuredOnly?: boolean }) {
     const [currentPage, setCurrentPage] = useState(1);
-    const [favorites, setFavorites] = useState<Set<string>>(new Set());
     const [selectedArtwork, setSelectedArtwork] = useState<Artwork | null>(null);
     const [selectedCategory, setSelectedCategory] = useState<string>('todas');
     const [selectedEstado, setSelectedEstado] = useState<string>('todos');
@@ -144,15 +141,6 @@ export function GalleryFull({ showFilters = true, featuredOnly = false }: { show
     // Obtener categorías únicas
     const categories = ['todas', ...Array.from(new Set(allArtworks.map(artwork => artwork.category)))];
 
-    const toggleFavorite = (id: string) => {
-        const newFavorites = new Set(favorites);
-        if (newFavorites.has(id)) {
-            newFavorites.delete(id);
-        } else {
-            newFavorites.add(id);
-        }
-        setFavorites(newFavorites);
-    };
 
     const handleViewArtwork = (artwork: Artwork) => {
         setSelectedArtwork(artwork);
@@ -225,9 +213,9 @@ export function GalleryFull({ showFilters = true, featuredOnly = false }: { show
                             <p className="text-gray-600">
                                 Obteniendo las obras más recientes
                             </p>
+                              </div>
+                          </div>
                         </div>
-                    </div>
-                </div>
             </section>
         );
     }
@@ -248,7 +236,7 @@ export function GalleryFull({ showFilters = true, featuredOnly = false }: { show
 
 
                 {/* Información de resultados */}
-                <div className="mb-6 text-center">
+                <div className="mb-6 text-center text-pink-500">
                     <div className="text-gray-600 mb-2">
                         Mostrando {startIndex + 1}-{Math.min(endIndex, filteredArtworks.length)} de {filteredArtworks.length} obras
                     </div>
@@ -338,6 +326,9 @@ export function GalleryFull({ showFilters = true, featuredOnly = false }: { show
                             {artwork.status === 'vendida' ? '🔒 Obra Vendida' : '👁️ Ver Detalles'}
                           </Button>
                         </div>
+                      </div>
+                      <div className="px-2 pt-3">
+                        <h3 className="text-sm font-medium truncate" style={{ color: '#eb2a64' }}>{artwork.title}</h3>
                       </div>
                     </div>
                 ))}
